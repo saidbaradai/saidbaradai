@@ -34,4 +34,4 @@ Here are some ideas to get you started:
 <img height="50"  src="https://user-images.githubusercontent.com/25181517/121405947-e8371e80-c95d-11eb-9e81-432e077edd40.png">
 <img height="50"  src="https://user-images.githubusercontent.com/25181517/117364277-fc4eb280-aebd-11eb-8769-a3583c6a2037.png">
 <img height="50"  src="https://user-images.githubusercontent.com/25181517/117364276-fc4eb280-aebd-11eb-92ba-8a6ef74b7313.png">
-<img height="50"  src="https://user-images.githubusercontent.com/25181517/121302453-01a67f00-c8fa-11eb-8c86-2ee00734c9a8.png">
+
