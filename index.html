@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Benchmark: Corporate & Academic Sustainability Strategies</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Professional Blue (Corporate), Academic Teal (Universities), Warm Neutrals -->
+    <!-- Application Structure Plan: The SPA is designed as a strategic dashboard. It begins with a high-level summary and a comparative chart of Net-Zero targets for all 10 organizations. The core is an interactive "Strategy Deep Dive" section with tabs to switch between Corporate and University sectors. Selecting an organization dynamically loads its detailed strategy, tools, and key learnings. This is followed by a "Best-in-Class Playbook" section, which distills the report's synthesized best practices into actionable steps. The final section presents the specific, practical recommendations for the University of Exeter. This structure guides the user from broad comparison to detailed analysis, then to a practical framework, and finally to concrete actions, facilitating a comprehensive understanding of the landscape and Exeter's path forward. -->
+    <!-- Visualization & Content Choices: 1. Report Info: Net-Zero Targets for all 10 orgs -> Goal: Compare -> Viz: Horizontal Bar Chart -> Interaction: Hover for details, color-coded by sector -> Justification: Provides an immediate, clear visual comparison of ambition levels across both sectors. Library: Chart.js. 2. Report Info: Detailed organization profiles -> Goal: Organize/Inform/Compare -> Viz: Dynamic HTML content blocks within a tabbed interface -> Interaction: Click tabs for sector, click buttons for specific organization -> Justification: Manages complexity by allowing focused exploration without overwhelming the user. Enables direct comparison of different models (e.g., L'Oréal vs. Lancaster). Method: Vanilla JS DOM manipulation. 3. Report Info: Best-practice framework -> Goal: Inform/Guide -> Viz: Numbered, card-based layout with icons -> Interaction: Static but highly readable -> Justification: Presents the core strategic takeaways in a clear, memorable, and easily digestible format. Method: HTML/Tailwind CSS. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc; /* slate-50 */
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 900px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 450px;
+            max-height: 500px;
+        }
+        @media (max-width: 768px) {
+            .chart-container {
+                height: 400px;
+            }
+        }
+        .nav-link {
+            transition: color 0.2s;
+        }
+        .nav-link:hover {
+            color: #0d9488; /* teal-600 */
+        }
+        .tab-button.active {
+            border-color: #0d9488; /* teal-600 */
+            color: #0d9488;
+            background-color: #ccfbf1; /* teal-100 */
+        }
+        .org-button.active {
+            background-color: #0d9488; /* teal-600 */
+            color: white;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+        }
+        .org-button.corporate.active {
+             background-color: #1d4ed8; /* blue-700 */
+        }
+    </style>
+</head>
+<body class="text-slate-800">
+
+    <header class="bg-white shadow-sm sticky top-0 z-50">
+        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <h1 class="text-xl md:text-2xl font-bold text-slate-800">Scope 3 Decarbonization Playbook</h1>
+            <div class="hidden md:flex space-x-8">
+                <a href="#comparison" class="nav-link font-medium text-slate-600">Comparison</a>
+                <a href="#deep-dive" class="nav-link font-medium text-slate-600">Deep Dive</a>
+                <a href="#playbook" class="nav-link font-medium text-slate-600">Playbook</a>
+                <a href="#recommendations" class="nav-link font-medium text-slate-600">For Exeter</a>
+            </div>
+            <div class="md:hidden">
+                <select id="mobile-nav" class="border border-slate-300 rounded-md p-2 bg-white">
+                    <option value="#comparison">Comparison</option>
+                    <option value="#deep-dive">Deep Dive</option>
+                    <option value="#playbook">Playbook</option>
+                    <option value="#recommendations">For Exeter</option>
+                </select>
+            </div>
+        </nav>
+    </header>
+
+    <main class="container mx-auto px-6 py-8 md:py-12">
+
+        <section class="text-center mb-16">
+            <h2 class="text-3xl md:text-4xl font-bold text-slate-900 mb-4">Pathways to Value Chain Decarbonization</h2>
+            <p class="max-w-3xl mx-auto text-lg text-slate-600">
+                An interactive benchmark of corporate and academic leaders, distilling best practices in Scope 3 management. This dashboard translates the full report into a practical, explorable playbook to guide strategy.
+            </p>
+        </section>
+
+        <section id="comparison" class="mb-16 scroll-mt-20">
+            <div class="text-center mb-12">
+                <h3 class="text-2xl md:text-3xl font-bold text-slate-900 mb-2">A Tale of Two Sectors</h3>
+                <p class="max-w-3xl mx-auto text-slate-600">Corporations leverage market power and direct investment, while universities pioneer collaborative platforms. This chart compares the net-zero ambitions across both sectors, revealing different timelines and levels of commitment.</p>
+            </div>
+            <div class="bg-white p-6 md:p-8 rounded-xl shadow-md border border-slate-200">
+                <h4 class="text-xl font-bold text-center mb-4">Value Chain (Scope 3) Net-Zero Target Timelines</h4>
+                <div class="chart-container">
+                    <canvas id="targetsChart"></canvas>
+                </div>
+            </div>
+        </section>
+
+        <section id="deep-dive" class="mb-16 scroll-mt-20">
+            <div class="text-center mb-12">
+                <h3 class="text-2xl md:text-3xl font-bold text-slate-900 mb-2">Strategy Deep Dive</h3>
+                <p class="max-w-3xl mx-auto text-slate-600">Explore the distinct models of value chain management. Select a sector, then an organization to understand their specific tools, supplier requirements, and strategic approach.</p>
+            </div>
+
+            <div class="flex justify-center mb-8 border-b border-slate-200">
+                <button id="tab-corporate" class="tab-button text-lg font-semibold py-3 px-6 border-b-2">Corporate Leaders</button>
+                <button id="tab-university" class="tab-button text-lg font-semibold py-3 px-6 border-b-2">Higher Education</button>
+            </div>
+
+            <div id="org-selector" class="flex flex-wrap justify-center gap-2 md:gap-4 mb-8"></div>
+
+            <div id="org-display" class="bg-white p-6 md:p-8 rounded-xl shadow-lg border border-slate-200 min-h-[350px] max-w-5xl mx-auto transition-all duration-300">
+                <div class="grid md:grid-cols-5 gap-6 md:gap-8">
+                    <div class="md:col-span-3">
+                        <h4 id="org-name" class="text-2xl font-bold mb-4"></h4>
+                        <div class="space-y-4">
+                            <div>
+                                <p class="font-semibold text-slate-500 text-sm uppercase tracking-wider">Primary Tool / Platform</p>
+                                <p id="org-tool" class="text-lg font-medium"></p>
+                            </div>
+                            <div>
+                                <p class="font-semibold text-slate-500 text-sm uppercase tracking-wider">Key Supplier Requirement(s)</p>
+                                <p id="org-requirements" class="text-lg font-medium"></p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="md:col-span-2 bg-slate-50 p-6 rounded-lg">
+                        <h5 class="font-bold text-lg mb-3 text-slate-800">Support & Incentive Mechanisms</h5>
+                        <p id="org-incentives" class="text-slate-700"></p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="playbook" class="mb-16 scroll-mt-20">
+            <div class="text-center mb-12">
+                <h3 class="text-2xl md:text-3xl font-bold text-slate-900 mb-2">The Playbook for Best-in-Class Decarbonization</h3>
+                <p class="max-w-3xl mx-auto text-slate-600">Synthesizing the most effective practices from all ten organizations reveals a clear, six-step framework for any organization to follow, from foundational measurement to market-leading intervention.</p>
+            </div>
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="bg-white p-6 rounded-xl shadow-md border border-slate-200">
+                    <div class="flex items-center mb-3"><span class="text-3xl mr-4">🏛️</span><h4 class="font-bold text-lg">1. Establish Governance</h4></div>
+                    <p class="text-slate-600">Create board-level accountability and integrate Scope 3 targets into core institutional strategy and KPIs.</p>
+                </div>
+                <div class="bg-white p-6 rounded-xl shadow-md border border-slate-200">
+                    <div class="flex items-center mb-3"><span class="text-3xl mr-4">📏</span><h4 class="font-bold text-lg">2. Conduct Rigorous Measurement</h4></div>
+                    <p class="text-slate-600">Build a full Scope 3 inventory aligned with the GHG Protocol to identify emission hotspots and create a credible data baseline.</p>
+                </div>
+                <div class="bg-white p-6 rounded-xl shadow-md border border-slate-200">
+                    <div class="flex items-center mb-3"><span class="text-3xl mr-4">✍️</span><h4 class="font-bold text-lg">3. Integrate into Procurement</h4></div>
+                    <p class="text-slate-600">Embed a formal, mandatory Supplier Code of Conduct with explicit environmental requirements into all contracts.</p>
+                </div>
+                <div class="bg-white p-6 rounded-xl shadow-md border border-slate-200">
+                    <div class="flex items-center mb-3"><span class="text-3xl mr-4">🎯</span><h4 class="font-bold text-lg">4. Implement Tiered Engagement</h4></div>
+                    <p class="text-slate-600">Use broad platforms for the wider supply base and deep, collaborative partnerships for high-impact, strategic suppliers.</p>
+                </div>
+                <div class="bg-white p-6 rounded-xl shadow-md border border-slate-200">
+                    <div class="flex items-center mb-3"><span class="text-3xl mr-4">💰</span><h4 class="font-bold text-lg">5. Deploy Financial Levers</h4></div>
+                    <p class="text-slate-600">Create tangible incentives through sustainability-linked finance programs or direct investment funds for suppliers.</p>
+                </div>
+                <div class="bg-white p-6 rounded-xl shadow-md border border-slate-200">
+                    <div class="flex items-center mb-3"><span class="text-3xl mr-4">♻️</span><h4 class="font-bold text-lg">6. Foster Innovation & Disruption</h4></div>
+                    <p class="text-slate-600">Proactively procure from suppliers with circular business models and invest in pilot projects for new sustainable technologies.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="recommendations" class="scroll-mt-20">
+            <div class="text-center mb-12">
+                <h3 class="text-2xl md:text-3xl font-bold text-slate-900 mb-2">Practical & Replicable Actions for Exeter</h3>
+                <p class="max-w-3xl mx-auto text-slate-600">These prioritized recommendations provide a clear, practical roadmap for the University of Exeter to implement a sector-leading Scope 3 and sustainable procurement strategy.</p>
+            </div>
+            <div class="space-y-6 max-w-4xl mx-auto">
+                <div class="bg-white p-6 rounded-xl shadow-md border border-teal-500/50">
+                    <h4 class="font-bold text-lg text-teal-800 mb-2">1. Adopt Collaborative Platform (Immediate Priority)</h4>
+                    <p class="text-slate-600">Formally evaluate and join the **Net Zero Carbon Supplier Tool (NETpositive)**. This is the most efficient path to collecting high-quality primary data, aligning with peer best practice, and avoiding the cost of developing a bespoke system.</p>
+                </div>
+                <div class="bg-white p-6 rounded-xl shadow-md border border-teal-500/50">
+                    <h4 class="font-bold text-lg text-teal-800 mb-2">2. Mandate Quantifiable Tender Weighting (Immediate Priority)</h4>
+                    <p class="text-slate-600">Amend procurement policy to mandate a minimum **10-15% weighting for sustainability** in all high-value tender evaluations. This translates policy directly into commercial leverage and forces suppliers to compete on environmental performance.</p>
+                </div>
+                <div class="bg-white p-6 rounded-xl shadow-md border border-teal-500/50">
+                    <h4 class="font-bold text-lg text-teal-800 mb-2">3. Overhaul Carbon Reporting (Medium-Term)</h4>
+                    <p class="text-slate-600">Develop an annual reporting suite with a public summary and a detailed **Technical Appendix** (like U. of Southampton). In parallel, scope and build an **internal carbon dashboard** for budget holders (like Lancaster U.) to drive internal accountability.</p>
+                </div>
+                <div class="bg-white p-6 rounded-xl shadow-md border border-teal-500/50">
+                    <h4 class="font-bold text-lg text-teal-800 mb-2">4. Formalize in Contract Management (Ongoing)</h4>
+                    <p class="text-slate-600">Update contract management procedures to make sustainability performance a **mandatory, standing agenda item** for all regular supplier review meetings, ensuring continuous improvement throughout the contract lifecycle.</p>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="bg-slate-800 text-slate-400 mt-16">
+        <div class="container mx-auto px-6 py-4 text-center">
+            <p>&copy; 2025 Strategic Analysis for the University of Exeter. Data sourced from public corporate and academic reports.</p>
+        </div>
+    </footer>
+
+    <script>
+        const allData = {
+            corporate: [
+                {
+                    name: 'L’Oréal',
+                    tool: 'CDP Supply Chain',
+                    requirements: 'Participate in CDP reporting; Set SBTi-aligned targets.',
+                    incentives: 'Individual coaching, webinars, and the \'Solstice\' debt fund to provide direct financing for supplier decarbonization projects.',
+                    targetYear: 2050
+                },
+                {
+                    name: 'Google',
+                    tool: 'Supplier Code of Conduct',
+                    requirements: 'Mandatory adherence to environmental clauses, including 100% clean energy for Google production by 2030 via a Clean Energy Addendum.',
+                    incentives: 'Provides an Energy Assessment Tool and makes direct investments in regional clean energy grids to create market availability for suppliers.',
+                    targetYear: 2030
+                },
+                {
+                    name: 'Danone',
+                    tool: 'Regenerative Agriculture Program',
+                    requirements: 'Adherence to Deforestation- and Conversion-Free (DCF) policies; Implementation of regenerative farming practices.',
+                    incentives: 'Provides a Regenerative Agriculture Knowledge Center with scorecards and handbooks; Utilizes the Sustainable Dairy Partnership framework.',
+                    targetYear: 2050
+                },
+                {
+                    name: 'Tesco',
+                    tool: 'Tesco Supplier Network (TSN)',
+                    requirements: 'Report emissions data and set net-zero commitments.',
+                    incentives: 'A knowledge sharing hub, a surplus stock marketplace (Tesco Exchange), and a pioneering sustainability-linked supply chain finance program.',
+                    targetYear: 2050
+                },
+                {
+                    name: 'Circular Computing',
+                    tool: 'BSI Kitemark & Carbon Neutral Certification',
+                    requirements: 'N/A (Product is the solution)',
+                    incentives: 'Provides customers with a pre-verified, third-party audited, low-carbon remanufactured product, directly reducing their Scope 3 footprint.',
+                    targetYear: null // Carbon Neutral now
+                }
+            ],
+            university: [
+                {
+                    name: 'Lancaster University',
+                    tool: 'Net Zero Carbon Supplier Tool',
+                    requirements: 'Mandatory sign-up to the tool for all contracted suppliers to report emissions and share reduction plans.',
+                    incentives: 'Collaborative platform reduces reporting burden; Provides internal carbon dashboard to budget holders to devolve accountability.',
+                    targetYear: 2035
+                },
+                {
+                    name: 'U. of Southampton',
+                    tool: 'HESCET (Internal Spend-Based Estimation)',
+                    requirements: 'Adherence to Supplier Code of Conduct and university policies.',
+                    incentives: 'Strategy mentions "working with suppliers," but specific support mechanisms are not detailed. Focus is on rigorous internal measurement.',
+                    targetYear: 2045
+                },
+                {
+                    name: 'U. of Manchester',
+                    tool: 'Net Zero Carbon Supplier Tool',
+                    requirements: 'Implied requirement to engage with the tool; Assessment of supply chain transparency in tenders.',
+                    incentives: 'Long-term commitment to a collaborative platform, reducing supplier fatigue. Co-created the original tool.',
+                    targetYear: 2050
+                },
+                {
+                    name: 'Nottingham Trent University',
+                    tool: 'Net Zero Carbon Supplier Tool',
+                    requirements: 'Agreement to work with NTU on strategic commitments and comply with its Net Zero Roadmap.',
+                    incentives: 'Pioneered the tool, offering suppliers a free carbon action plan. Sector-wide approach simplifies reporting for shared suppliers.',
+                    targetYear: 2040
+                },
+                {
+                    name: 'University of Reading',
+                    tool: 'Not Specified (Policy-led)',
+                    requirements: 'Adherence to Supplier Code of Conduct and Environmental/Energy Policies (ISO 14001 & 50001).',
+                    incentives: 'The primary lever is a mandatory 10% weighting for sustainability in tender evaluations, creating a direct commercial incentive to perform well.',
+                    targetYear: 2040
+                }
+            ]
+        };
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const orgSelector = document.getElementById('org-selector');
+            const orgNameEl = document.getElementById('org-name');
+            const orgToolEl = document.getElementById('org-tool');
+            const orgRequirementsEl = document.getElementById('org-requirements');
+            const orgIncentivesEl = document.getElementById('org-incentives');
+            const mobileNav = document.getElementById('mobile-nav');
+            const tabCorporate = document.getElementById('tab-corporate');
+            const tabUniversity = document.getElementById('tab-university');
+
+            let currentSector = 'corporate';
+
+            function updateDisplay(org) {
+                orgNameEl.textContent = org.name;
+                orgToolEl.textContent = org.tool;
+                orgRequirementsEl.textContent = org.requirements;
+                orgIncentivesEl.textContent = org.incentives;
+
+                document.querySelectorAll('.org-button').forEach(btn => {
+                    btn.classList.toggle('active', btn.dataset.name === org.name);
+                });
+            }
+            
+            function renderButtons(sector) {
+                orgSelector.innerHTML = '';
+                allData[sector].forEach(org => {
+                    const button = document.createElement('button');
+                    button.textContent = org.name;
+                    button.dataset.name = org.name;
+                    button.className = `org-button ${sector} px-4 py-2 text-sm md:text-base font-medium rounded-full bg-white text-slate-700 border border-slate-300 hover:bg-slate-100 transition-all duration-200`;
+                    button.addEventListener('click', () => {
+                        updateDisplay(org);
+                    });
+                    orgSelector.appendChild(button);
+                });
+                if (allData[sector].length > 0) {
+                    updateDisplay(allData[sector][0]);
+                }
+            }
+
+            function setActiveTab(sector) {
+                currentSector = sector;
+                tabCorporate.classList.toggle('active', sector === 'corporate');
+                tabUniversity.classList.toggle('active', sector === 'university');
+                if (sector === 'corporate') {
+                    tabCorporate.classList.add('text-blue-700', 'border-blue-700');
+                    tabUniversity.classList.remove('text-teal-700', 'border-teal-700', 'bg-teal-100');
+                } else {
+                    tabUniversity.classList.add('text-teal-700', 'border-teal-700');
+                    tabCorporate.classList.remove('text-blue-700', 'border-blue-700', 'bg-blue-100');
+                }
+                renderButtons(sector);
+            }
+
+            tabCorporate.addEventListener('click', () => setActiveTab('corporate'));
+            tabUniversity.addEventListener('click', () => setActiveTab('university'));
+
+            setActiveTab('corporate');
+
+            mobileNav.addEventListener('change', (e) => {
+                const targetId = e.target.value;
+                const targetElement = document.querySelector(targetId);
+                if (targetElement) {
+                    targetElement.scrollIntoView({ behavior: 'smooth' });
+                }
+            });
+
+            function wrapText(text, maxLen) {
+                if (!text || text.length <= maxLen) {
+                    return text;
+                }
+                const words = text.split(' ');
+                let lines = [];
+                let currentLine = '';
+                words.forEach(word => {
+                    if ((currentLine + word).length > maxLen) {
+                        lines.push(currentLine.trim());
+                        currentLine = '';
+                    }
+                    currentLine += word + ' ';
+                });
+                lines.push(currentLine.trim());
+                return lines;
+            }
+
+            const targetsCtx = document.getElementById('targetsChart').getContext('2d');
+            const chartData = [...allData.corporate, ...allData.university]
+                .filter(d => d.targetYear)
+                .sort((a, b) => a.targetYear - b.targetYear);
+            
+            new Chart(targetsCtx, {
+                type: 'bar',
+                data: {
+                    labels: chartData.map(d => wrapText(d.name, 20)),
+                    datasets: [{
+                        label: 'Net Zero Target Year',
+                        data: chartData.map(d => d.targetYear),
+                        backgroundColor: chartData.map(d => allData.corporate.includes(d) ? '#2563eb' : '#0d9488'),
+                        borderColor: 'white',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    indexAxis: 'y',
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            callbacks: {
+                                label: (context) => `Target: ${context.raw}`
+                            }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            beginAtZero: false,
+                            min: 2025,
+                            title: { display: true, text: 'Target Year' }
+                        },
+                        y: { ticks: { font: { size: 12 } } }
+                    }
+                }
+            });
+        });
+    </script>
+
+</body>
+</html>
