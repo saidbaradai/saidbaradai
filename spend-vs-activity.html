@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Scope 3 Dilemma: An Interactive Report</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://unpkg.com/scrollreveal"></script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc; /* slate-50 */
+            color: #334155; /* slate-700 */
+        }
+        .hero-gradient {
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+        }
+        .section-title {
+            @apply text-3xl md:text-4xl font-bold text-slate-800 mb-4 text-center;
+        }
+        .section-subtitle {
+            @apply text-lg md:text-xl text-slate-600 mb-12 text-center max-w-3xl mx-auto;
+        }
+        .card {
+            @apply bg-white rounded-xl shadow-lg p-6 md:p-8 transition-all duration-300 hover:shadow-2xl hover:-translate-y-2;
+        }
+        .tag {
+            @apply inline-block bg-emerald-100 text-emerald-800 text-xs font-semibold mr-2 px-2.5 py-0.5 rounded-full;
+        }
+        .tag-red {
+            @apply bg-red-100 text-red-800;
+        }
+        .tag-blue {
+            @apply bg-sky-100 text-sky-800;
+        }
+        .tab-button {
+            @apply px-4 py-2 font-semibold text-slate-500 rounded-t-lg transition-colors duration-300;
+        }
+        .tab-button.active {
+            @apply bg-white text-emerald-600 border-b-2 border-emerald-600;
+        }
+        .fade-in {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <!-- Header -->
+    <header class="bg-white/80 backdrop-blur-lg sticky top-0 z-50 shadow-sm">
+        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <div class="text-2xl font-bold text-slate-800">
+                <span class="text-emerald-600">Scope 3</span> Insights
+            </div>
+            <div class="hidden md:flex space-x-8 items-center">
+                <a href="#dilemma" class="text-slate-600 hover:text-emerald-600 transition-colors">The Dilemma</a>
+                <a href="#methods" class="text-slate-600 hover:text-emerald-600 transition-colors">Methods</a>
+                <a href="#cases" class="text-slate-600 hover:text-emerald-600 transition-colors">Case Studies</a>
+                <a href="#verdict" class="text-slate-600 hover:text-emerald-600 transition-colors">The Verdict</a>
+                <a href="#recommendations" class="bg-emerald-600 text-white px-4 py-2 rounded-lg hover:bg-emerald-700 transition-colors shadow-md">Recommendations</a>
+            </div>
+            <button id="mobile-menu-button" class="md:hidden text-slate-800">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" />
+                </svg>
+            </button>
+        </nav>
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hidden md:hidden">
+            <a href="#dilemma" class="block py-2 px-6 text-sm text-slate-600 hover:bg-slate-100">The Dilemma</a>
+            <a href="#methods" class="block py-2 px-6 text-sm text-slate-600 hover:bg-slate-100">Methods</a>
+            <a href="#cases" class="block py-2 px-6 text-sm text-slate-600 hover:bg-slate-100">Case Studies</a>
+            <a href="#verdict" class="block py-2 px-6 text-sm text-slate-600 hover:bg-slate-100">The Verdict</a>
+            <a href="#recommendations" class="block py-2 px-6 text-sm text-slate-600 hover:bg-slate-100">Recommendations</a>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero-gradient text-white py-20 md:py-32">
+        <div class="container mx-auto px-6 text-center">
+            <h1 class="text-4xl md:text-6xl font-extrabold mb-4 animate-fade-in-down">Navigating the Procurement Footprint Maze</h1>
+            <p class="text-lg md:text-2xl text-slate-300 max-w-4xl mx-auto mb-8 animate-fade-in-up">
+                Institutions are seeing 40-50% drops in their carbon footprint by switching methods. Is HESCET overestimating, or are new tools dangerously underestimating? This report unpacks the data.
+            </p>
+            <a href="#dilemma" class="bg-emerald-500 text-white font-bold py-3 px-8 rounded-full hover:bg-emerald-600 transition-transform hover:scale-105 shadow-lg animate-bounce-in">
+                Explore the Findings
+            </a>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <main>
+        <!-- The HESCET Dilemma Section -->
+        <section id="dilemma" class="py-16 md:py-24 bg-white">
+            <div class="container mx-auto px-6">
+                <h2 class="section-title reveal">The HESCET Dilemma</h2>
+                <p class="section-subtitle reveal">
+                    The Higher Education Supply Chain Emissions Tool (HESCET) has been the standard, but its spend-based methodology creates a fundamental paradox that can penalize sustainable choices.
+                </p>
+                <div class="grid md:grid-cols-2 gap-8 md:gap-12 items-center">
+                    <div class="reveal">
+                        <h3 class="text-2xl font-bold text-slate-800 mb-4">The "Spend Paradox"</h3>
+                        <p class="mb-4 text-slate-600">
+                            HESCET converts financial spend into emissions using industry-average factors ($kgCO_2e/£$). This means if you choose a more expensive, higher-quality, and more sustainable product, your calculated carbon footprint actually goes up.
+                        </p>
+                        <ul class="space-y-3">
+                            <li class="flex items-start">
+                                <svg class="h-6 w-6 text-red-500 mr-3 flex-shrink-0 mt-1" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                                <span><strong class="text-slate-700">Penalizes Quality:</strong> Choosing durable, longer-lasting items can increase your reported emissions due to higher cost.</span>
+                            </li>
+                            <li class="flex items-start">
+                                <svg class="h-6 w-6 text-red-500 mr-3 flex-shrink-0 mt-1" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                                <span><strong class="text-slate-700">Ignores Supplier Effort:</strong> It cannot differentiate between a supplier using renewable energy and one using coal power.</span>
+                            </li>
+                            <li class="flex items-start">
+                                <svg class="h-6 w-6 text-red-500 mr-3 flex-shrink-0 mt-1" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                                <span><strong class="text-slate-700">Action vs. Accounting:</strong> The only reliable way to lower emissions under this model is to simply spend less, not necessarily buy better.</span>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="card reveal">
+                        <h4 class="text-xl font-semibold mb-4 text-center">Interactive: The Paradox in Action</h4>
+                        <p class="text-sm text-slate-500 text-center mb-4">Adjust the slider to see how choosing a more expensive, sustainable laptop impacts your calculated footprint under HESCET.</p>
+                        <div>
+                            <label for="spend-slider" class="block mb-2 font-medium text-slate-700">Laptop Purchase Cost: <span id="spend-value" class="font-bold text-emerald-600">£1000</span></label>
+                            <input id="spend-slider" type="range" min="500" max="2000" value="1000" class="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer">
+                        </div>
+                        <div class="mt-6 text-center">
+                            <p class="text-slate-600">Calculated Emissions:</p>
+                            <p class="text-4xl font-extrabold text-red-600"><span id="emissions-value">500</span> kgCO₂e</p>
+                            <p id="scenario-text" class="text-sm mt-2 text-slate-500">Standard Laptop Purchase</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Methods Comparison Section -->
+        <section id="methods" class="py-16 md:py-24">
+            <div class="container mx-auto px-6">
+                <h2 class="section-title reveal">The Rise of Alternatives</h2>
+                <p class="section-subtitle reveal">
+                    Frustration with HESCET has led to new tools. Each represents a step up the data quality ladder, but comes with its own trade-offs.
+                </p>
+                <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <!-- HESCET Card -->
+                    <div class="card reveal">
+                        <h3 class="text-xl font-bold mb-3">HESCET / APUC</h3>
+                        <div class="mb-4"><span class="tag tag-red">Spend-Based</span><span class="tag-red">Top-Down</span></div>
+                        <p class="text-slate-600 mb-4">Estimates emissions by multiplying financial spend by industry-average emission factors. The APUC tool is a more granular version.</p>
+                        <div class="border-t pt-4 mt-4">
+                            <p class="font-semibold text-slate-800 mb-2">Pros:</p>
+                            <ul class="list-disc list-inside text-slate-600 space-y-1 text-sm">
+                                <li>Low cost and resource-light</li>
+                                <li>Good for initial screening & hotspots</li>
+                            </ul>
+                            <p class="font-semibold text-slate-800 mt-4 mb-2">Cons:</p>
+                             <ul class="list-disc list-inside text-slate-600 space-y-1 text-sm">
+                                <li>Prone to over/underestimation</li>
+                                <li>The "Spend Paradox"</li>
+                                <li>Not actionable for suppliers</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <!-- NetPositive Card -->
+                    <div class="card reveal">
+                        <h3 class="text-xl font-bold mb-3">NetPositive NZC Tool</h3>
+                        <div class="mb-4"><span class="tag">Supplier-Specific</span><span class="tag">Bottom-Up</span></div>
+                        <p class="text-slate-600 mb-4">Directly engages suppliers to collect their actual Scope 1 & 2 emissions data, or calculates it from their activity data (fuel, electricity).</p>
+                        <div class="border-t pt-4 mt-4">
+                            <p class="font-semibold text-slate-800 mb-2">Pros:</p>
+                            <ul class="list-disc list-inside text-slate-600 space-y-1 text-sm">
+                                <li>Uses "actual" supplier data</li>
+                                <li>Avoids the "Spend Paradox"</li>
+                                <li>Engages and supports suppliers</li>
+                            </ul>
+                            <p class="font-semibold text-slate-800 mt-4 mb-2">Cons:</p>
+                             <ul class="list-disc list-inside text-slate-600 space-y-1 text-sm">
+                                <li>Measures supplier Scope 1 & 2 only</li>
+                                <li>Misses supplier's own supply chain (Scope 3)</li>
+                                <li>High risk of underestimation vs. GHG Protocol</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <!-- Advanced EEIO Card -->
+                    <div class="card reveal">
+                        <h3 class="text-xl font-bold mb-3">Advanced EEIO (CEDA)</h3>
+                        <div class="mb-4"><span class="tag tag-blue">Advanced Spend-Based</span><span class="tag-blue">Top-Down</span></div>
+                        <p class="text-slate-600 mb-4">Uses powerful global databases (like CEDA or EXIOBASE) with thousands of highly specific, annually updated emission factors.</p>
+                        <div class="border-t pt-4 mt-4">
+                            <p class="font-semibold text-slate-800 mb-2">Pros:</p>
+                            <ul class="list-disc list-inside text-slate-600 space-y-1 text-sm">
+                                <li>Most accurate top-down method</li>
+                                <li>Highly granular and globally aware</li>
+                            </ul>
+                            <p class="font-semibold text-slate-800 mt-4 mb-2">Cons:</p>
+                             <ul class="list-disc list-inside text-slate-600 space-y-1 text-sm">
+                                <li>Still an estimation method</li>
+                                <li>Requires expert use and can be expensive</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Over/Underestimation Puzzle Section -->
+        <section id="puzzle" class="py-16 md:py-24 bg-white">
+            <div class="container mx-auto px-6">
+                <h2 class="section-title reveal">The Over/Underestimation Puzzle</h2>
+                <p class="section-subtitle reveal">
+                    The 40-50% variance isn't a simple error. It's a mix of correcting for HESCET's flaws while also potentially introducing new blind spots. Here's what's really happening.
+                </p>
+                <div class="card reveal">
+                    <canvas id="footprintChart"></canvas>
+                </div>
+                <div class="grid md:grid-cols-3 gap-8 mt-8">
+                    <div class="reveal">
+                        <h4 class="font-bold text-lg text-emerald-700">1. Correcting Overestimation</h4>
+                        <p class="text-slate-600 text-sm">Moving from basic HESCET to a more granular analysis (like LUPC did) reduces the footprint by applying more accurate, lower emission factors to specific goods, avoiding broad-brush averages.</p>
+                    </div>
+                    <div class="reveal">
+                        <h4 class="font-bold text-lg text-red-700">2. Correcting Underestimation</h4>
+                        <p class="text-slate-600 text-sm">Moving from the old (pre-2021) HESCET to the new version can *increase* the footprint (as GCU found) because the new factors better reflect high-carbon manufacturing in global supply chains.</p>
+                    </div>
+                    <div class="reveal">
+                        <h4 class="font-bold text-lg text-amber-700">3. The Boundary Shift Risk</h4>
+                        <p class="text-slate-600 text-sm">Moving to a tool like NetPositive causes the biggest drop, but it's partly because it doesn't measure the supplier's own supply chain (their Scope 3), which HESCET attempts to estimate. It's a more accurate measurement of a smaller piece of the pie.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Case Studies Section -->
+        <section id="cases" class="py-16 md:py-24">
+            <div class="container mx-auto px-6">
+                <h2 class="section-title reveal">Evidence from the Field</h2>
+                <p class="section-subtitle reveal">
+                    How have UK universities navigated this challenge? Their experiences provide a real-world look at the impact of different methodological choices.
+                </p>
+                <div class="reveal">
+                    <div class="border-b border-gray-200 mb-4">
+                        <nav class="-mb-px flex space-x-4" aria-label="Tabs">
+                            <button class="tab-button active" data-tab="ntu">Nottingham Trent</button>
+                            <button class="tab-button" data-tab="lupc">LUPC</button>
+                            <button class="tab-button" data-tab="imperial">Imperial College</button>
+                            <button class="tab-button" data-tab="gcu">Glasgow Caledonian</button>
+                            <button class="tab-button" data-tab="manchester">U of Manchester</button>
+                        </nav>
+                    </div>
+                    <div class="card">
+                        <!-- NTU Content -->
+                        <div id="ntu" class="tab-content">
+                            <h3 class="text-2xl font-bold text-slate-800 mb-2">Nottingham Trent University: The Pioneer</h3>
+                            <p class="font-semibold text-emerald-600 text-4xl mb-4">~50% Reduction</p>
+                            <p class="text-slate-600 mb-4">NTU co-developed the NetPositive NZC Supplier Tool to get actual data. By using this primary data for just 18% of their spend, they saw a massive 8,221 tCO2e reduction.</p>
+                            <p class="font-semibold text-slate-700">Key Insight: <span class="font-normal text-slate-600">Direct supplier engagement provides the most actionable data and the largest footprint reductions, but requires significant investment in building relationships.</span></p>
+                        </div>
+                        <!-- LUPC Content -->
+                        <div id="lupc" class="tab-content hidden">
+                            <h3 class="text-2xl font-bold text-slate-800 mb-2">London Universities Purchasing Consortium (LUPC): The Refiner</h3>
+                            <p class="font-semibold text-emerald-600 text-4xl mb-4">-64% Reduction</p>
+                            <p class="text-slate-600 mb-4">LUPC didn't switch tools, they refined their analysis. By breaking down broad spend categories (e.g., "Professional Services") into specifics (legal, financial, etc.) and applying better factors, they slashed their footprint.</p>
+                            <p class="font-semibold text-slate-700">Key Insight: <span class="font-normal text-slate-600">Granularity is key. Significant overestimation is baked into basic HESCET reports. Careful refinement can yield huge accuracy gains.</span></p>
+                        </div>
+                        <!-- Imperial Content -->
+                        <div id="imperial" class="tab-content hidden">
+                            <h3 class="text-2xl font-bold text-slate-800 mb-2">Imperial College London: The Hybrid Builder</h3>
+                            <p class="font-semibold text-emerald-600 text-4xl mb-4">-30,000 tCO2e</p>
+                            <p class="text-slate-600 mb-4">Imperial built their own hybrid model. They created 21 new, more relevant spend categories and integrated activity-based data (like actual kWh for energy losses) where possible.</p>
+                            <p class="font-semibold text-slate-700">Key Insight: <span class="font-normal text-slate-600">A powerful "middle way" exists. You can significantly improve accuracy by customising spend-based tools to your institution's specific context.</span></p>
+                        </div>
+                        <!-- GCU Content -->
+                        <div id="gcu" class="tab-content hidden">
+                            <h3 class="text-2xl font-bold text-slate-800 mb-2">Glasgow Caledonian University: The Global Realist</h3>
+                            <p class="font-semibold text-red-600 text-4xl mb-4">~100% Increase</p>
+                            <p class="text-slate-600 mb-4">GCU's footprint *doubled* when they moved from the old (pre-2021) HESCET to the new version. Why? The updated factors more accurately captured the high carbon intensity of their global supply chain (e.g., electronics from Asia).</p>
+                            <p class="font-semibold text-slate-700">Key Insight: <span class="font-normal text-slate-600">Better data doesn't always mean a lower number. The old HESCET was likely under-reporting the impact of globalised manufacturing.</span></p>
+                        </div>
+                        <!-- Manchester Content -->
+                        <div id="manchester" class="tab-content hidden">
+                            <h3 class="text-2xl font-bold text-slate-800 mb-2">University of Manchester: The Auditor</h3>
+                            <p class="font-semibold text-red-600 text-4xl mb-4">+14% Increase</p>
+                            <p class="text-slate-600 mb-4">Manchester engaged external experts (EcoAct) for a rigorous, GHG Protocol-aligned baseline. The use of more accurate, inflation-adjusted emission factors led to an upward revision of their footprint.</p>
+                            <p class="font-semibold text-slate-700">Key Insight: <span class="font-normal text-slate-600">A robust, externally-verified baseline is crucial for credibility, even if it reveals your footprint is larger than previously thought.</span></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Verdict & Maturity Model Section -->
+        <section id="verdict" class="py-16 md:py-24 bg-white">
+            <div class="container mx-auto px-6">
+                <h2 class="section-title reveal">The Verdict: A Question of Maturity</h2>
+                <p class="section-subtitle reveal">
+                    So, is HESCET overestimating or are alternatives underestimating? The answer is **both**. The journey to accurate accounting is a progression through levels of data maturity, not a single choice of tool.
+                </p>
+                <div class="space-y-8">
+                    <!-- Level 1 -->
+                    <div class="card reveal flex items-start space-x-6">
+                        <div class="flex-shrink-0 bg-emerald-600 text-white rounded-full h-16 w-16 flex items-center justify-center text-2xl font-bold">1</div>
+                        <div>
+                            <h3 class="text-xl font-bold text-slate-800">Level 1: Screening</h3>
+                            <p class="text-slate-600">Use the latest HESCET/APUC tool to get a first-pass footprint. The goal isn't perfect accuracy, but to conduct a Pareto analysis and identify your high-impact "hotspots" (e.g., construction, ICT, labs).</p>
+                        </div>
+                    </div>
+                    <!-- Level 2 -->
+                    <div class="card reveal flex items-start space-x-6">
+                        <div class="flex-shrink-0 bg-emerald-600 text-white rounded-full h-16 w-16 flex items-center justify-center text-2xl font-bold">2</div>
+                        <div>
+                            <h3 class="text-xl font-bold text-slate-800">Level 2: Refining</h3>
+                            <p class="text-slate-600">Improve your baseline's credibility. Disaggregate the hotspot categories and integrate activity-based data (kWh, mileage, tonnage) where possible, following the Imperial College model.</p>
+                        </div>
+                    </div>
+                    <!-- Level 3 -->
+                    <div class="card reveal flex items-start space-x-6">
+                        <div class="flex-shrink-0 bg-emerald-600 text-white rounded-full h-16 w-16 flex items-center justify-center text-2xl font-bold">3</div>
+                        <div>
+                            <h3 class="text-xl font-bold text-slate-800">Level 3: Engaging</h3>
+                            <p class="text-slate-600">Shift from estimation to primary data. Use a tool like NetPositive to engage your key hotspot suppliers. Focus your resources where they will have the most material impact on your footprint.</p>
+                        </div>
+                    </div>
+                    <!-- Level 4 -->
+                    <div class="card reveal flex items-start space-x-6">
+                        <div class="flex-shrink-0 bg-emerald-600 text-white rounded-full h-16 w-16 flex items-center justify-center text-2xl font-bold">4</div>
+                        <div>
+                            <h3 class="text-xl font-bold text-slate-800">Level 4: Integrating</h3>
+                            <p class="text-slate-600">Operate a fully hybrid system. Use the best available top-down estimation for the "long tail" of suppliers, while embedding primary data collection for all strategic suppliers into your core procurement processes and contracts.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Recommendations Section -->
+        <section id="recommendations" class="py-16 md:py-24 hero-gradient text-white">
+            <div class="container mx-auto px-6 text-center">
+                <h2 class="text-3xl md:text-4xl font-bold mb-4 reveal">Strategic Recommendations</h2>
+                <p class="text-lg md:text-xl text-slate-300 max-w-3xl mx-auto mb-12 reveal">
+                    Focus on gathering actionable intelligence, not just chasing the lowest number. The future is hybrid, collaborative, and focused on driving real-world change.
+                </p>
+                <div class="grid md:grid-cols-3 gap-8 text-left">
+                    <div class="bg-slate-800/50 p-6 rounded-lg reveal">
+                        <h4 class="font-bold text-xl mb-2 text-emerald-400">1. Focus on Action, Not the Number</h4>
+                        <p class="text-slate-300">The goal is to find the method that provides the most actionable data. A tool that generates a Carbon Action Plan for a supplier is more valuable than one that just provides a top-down estimate.</p>
+                    </div>
+                    <div class="bg-slate-800/50 p-6 rounded-lg reveal">
+                        <h4 class="font-bold text-xl mb-2 text-emerald-400">2. Embrace a Hybrid Future</h4>
+                        <p class="text-slate-300">No single tool is perfect. The most robust approach combines top-down estimation (for the long tail of suppliers) with bottom-up primary data collection (for your high-impact, strategic partners).</p>
+                    </div>
+                    <div class="bg-slate-800/50 p-6 rounded-lg reveal">
+                        <h4 class="font-bold text-xl mb-2 text-emerald-400">3. Collaborate to Accelerate</h4>
+                        <p class="text-slate-300">This challenge is too big for any one institution. Work through purchasing consortia and sector groups to standardize data requests, share the burden, and send a unified signal to the supply chain.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-slate-800 text-slate-400 py-8">
+        <div class="container mx-auto px-6 text-center text-sm">
+            <p>&copy; 2025 Scope 3 Insights. An interactive report generated to clarify procurement carbon footprinting methodologies.</p>
+            <p class="mt-2">This is a conceptual web application based on the provided report.</p>
+        </div>
+    </footer>
+
+    <script>
+        // --- Mobile Menu Toggle ---
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+        mobileMenuButton.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        // --- Spend Paradox Slider ---
+        const spendSlider = document.getElementById('spend-slider');
+        const spendValue = document.getElementById('spend-value');
+        const emissionsValue = document.getElementById('emissions-value');
+        const scenarioText = document.getElementById('scenario-text');
+        // This is a demonstrative factor. Real factors vary by category.
+        const emissionFactor = 0.5; // kgCO2e per £
+
+        function updateEmissions() {
+            const spend = parseInt(spendSlider.value);
+            const emissions = (spend * emissionFactor).toFixed(0);
+            spendValue.textContent = `£${spend}`;
+            emissionsValue.textContent = emissions;
+
+            if (spend < 800) {
+                scenarioText.textContent = 'Budget Laptop Purchase';
+            } else if (spend >= 800 && spend < 1500) {
+                scenarioText.textContent = 'Standard Laptop Purchase';
+            } else {
+                scenarioText.textContent = 'High-End, Sustainable Laptop Purchase (Paradoxically higher calculated emissions)';
+            }
+        }
+        spendSlider.addEventListener('input', updateEmissions);
+        updateEmissions();
+
+        // --- Case Studies Tabs ---
+        const tabButtons = document.querySelectorAll('.tab-button');
+        const tabContents = document.querySelectorAll('.tab-content');
+
+        tabButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                // Deactivate all
+                tabButtons.forEach(btn => btn.classList.remove('active'));
+                tabContents.forEach(content => content.classList.add('hidden'));
+
+                // Activate clicked
+                button.classList.add('active');
+                const tabId = button.getAttribute('data-tab');
+                document.getElementById(tabId).classList.remove('hidden');
+            });
+        });
+
+        // --- Footprint Comparison Chart ---
+        const ctx = document.getElementById('footprintChart').getContext('2d');
+        const footprintChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: ['Baseline (Old HESCET)', 'Refined Spend-Based (LUPC)', 'Supplier Data (NetPositive)', 'New HESCET (Global)'],
+                datasets: [{
+                    label: 'Calculated Footprint (Illustrative tCO2e)',
+                    data: [100000, 36000, 50000, 114000],
+                    backgroundColor: [
+                        'rgba(100, 116, 139, 0.6)', // slate-500
+                        'rgba(16, 185, 129, 0.6)', // emerald-500
+                        'rgba(245, 158, 11, 0.6)', // amber-500
+                        'rgba(220, 38, 38, 0.6)',  // red-600
+                    ],
+                    borderColor: [
+                        'rgb(100, 116, 139)',
+                        'rgb(16, 185, 129)',
+                        'rgb(245, 158, 11)',
+                        'rgb(220, 38, 38)',
+                    ],
+                    borderWidth: 2,
+                    barPercentage: 0.6,
+                    categoryPercentage: 0.7,
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        display: false
+                    },
+                    title: {
+                        display: true,
+                        text: 'Illustrative Impact of Different Methodologies on a Footprint',
+                        font: {
+                            size: 18,
+                            weight: 'bold',
+                        },
+                        color: '#334155',
+                        padding: {
+                            top: 10,
+                            bottom: 30
+                        }
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                let label = context.dataset.label || '';
+                                if (label) {
+                                    label += ': ';
+                                }
+                                if (context.parsed.y !== null) {
+                                    label += new Intl.NumberFormat('en-UK').format(context.parsed.y) + ' tCO2e';
+                                }
+                                return label;
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        title: {
+                            display: true,
+                            text: 'Tonnes of CO2 equivalent (tCO2e)',
+                            font: {
+                                size: 14,
+                            },
+                            color: '#475569'
+                        }
+                    }
+                }
+            }
+        });
+
+        // --- Scroll Reveal Animations ---
+        // Initialize ScrollReveal
+        const sr = ScrollReveal({
+            distance: '50px',
+            duration: 800,
+            easing: 'cubic-bezier(0.5, 0, 0, 1)',
+            reset: false
+        });
+
+        // Apply reveal effect to elements with the 'reveal' class
+        sr.reveal('.reveal', {
+            origin: 'bottom',
+            interval: 100 // Stagger effect for multiple elements
+        });
+        
+        // Custom animations for hero
+        const heroTitle = {
+            origin: 'top',
+            distance: '30px',
+            duration: 800,
+            delay: 200,
+        };
+        const heroText = {
+            origin: 'bottom',
+            distance: '30px',
+            duration: 800,
+            delay: 400,
+        };
+        const heroButton = {
+            origin: 'bottom',
+            distance: '30px',
+            duration: 800,
+            delay: 600,
+            viewFactor: 0.5
+        };
+        
+        sr.reveal('.animate-fade-in-down', heroTitle);
+        sr.reveal('.animate-fade-in-up', heroText);
+        sr.reveal('.animate-bounce-in', heroButton);
+    </script>
+</body>
+</html>
