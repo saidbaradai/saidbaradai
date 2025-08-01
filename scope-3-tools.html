@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Supply Chain Emissions Tool Evaluation | University of Exeter</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .tab-active {
+            border-bottom-color: #1E40AF;
+            color: #1E40AF;
+            font-weight: 600;
+        }
+        .tab {
+            transition: all 0.3s ease;
+        }
+        .fade-in {
+            animation: fadeIn 0.5s ease-in-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800">
+
+    <!-- Header -->
+    <header class="bg-white shadow-md sticky top-0 z-50">
+        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <div class="text-2xl font-bold text-blue-900">
+                <a href="#">UoE | Sustainability Hub</a>
+            </div>
+            <div class="hidden md:flex space-x-8">
+                <a href="#overview" class="text-gray-600 hover:text-blue-800">Overview</a>
+                <a href="#tool-analysis" class="text-gray-600 hover:text-blue-800">Tool Analysis</a>
+                <a href="#comparison" class="text-gray-600 hover:text-blue-800">Comparison</a>
+                <a href="#recommendations" class="text-gray-600 hover:text-blue-800">Recommendations</a>
+            </div>
+            <button id="mobile-menu-button" class="md:hidden flex items-center">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+            </button>
+        </nav>
+        <div id="mobile-menu" class="hidden md:hidden">
+            <a href="#overview" class="block py-2 px-4 text-sm hover:bg-gray-100">Overview</a>
+            <a href="#tool-analysis" class="block py-2 px-4 text-sm hover:bg-gray-100">Tool Analysis</a>
+            <a href="#comparison" class="block py-2 px-4 text-sm hover:bg-gray-100">Comparison</a>
+            <a href="#recommendations" class="block py-2 px-4 text-sm hover:bg-gray-100">Recommendations</a>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="bg-blue-900 text-white">
+        <div class="container mx-auto px-6 py-20 text-center">
+            <h1 class="text-4xl md:text-6xl font-bold leading-tight mb-4">From Measurement to Action</h1>
+            <p class="text-lg md:text-xl text-blue-200 mb-8 max-w-3xl mx-auto">An interactive evaluation of supply chain emissions management tools for the University of Exeter, focusing on collaborative supplier reduction.</p>
+            <a href="#tool-analysis" class="bg-white text-blue-900 font-bold py-3 px-8 rounded-full hover:bg-gray-200 transition duration-300">Explore the Tools</a>
+        </div>
+    </section>
+
+    <!-- Overview Section -->
+    <section id="overview" class="py-16 bg-white">
+        <div class="container mx-auto px-6">
+            <h2 class="text-3xl font-bold text-center mb-4">The Challenge: Decarbonizing Our Supply Chain</h2>
+            <p class="text-center text-gray-600 max-w-4xl mx-auto mb-12">The University of Exeter has a vast and diverse supply chain. To meet our ambitious climate targets, we must move beyond simply measuring our Scope 3 emissions. We need to actively engage with our suppliers—from large corporations to local SMEs—and empower them to reduce their own carbon footprints. This evaluation identifies the best tools to facilitate this crucial, collaborative effort.</p>
+        </div>
+    </section>
+
+    <!-- Tool Analysis Section -->
+    <section id="tool-analysis" class="py-16">
+        <div class="container mx-auto px-6">
+            <h2 class="text-3xl font-bold text-center mb-12">In-Depth Tool Analysis</h2>
+
+            <!-- Tool Cards -->
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Green Project Tech Card -->
+                <div class="bg-white rounded-lg shadow-lg p-6">
+                    <h3 class="text-xl font-bold mb-2">Green Project Tech</h3>
+                    <p class="text-gray-600 mb-4">A comprehensive platform supercharged by the acquisition of Emitwise, focusing on collaborative reduction.</p>
+                    <button onclick="openModal('gpt')" class="w-full bg-blue-800 text-white font-bold py-2 px-4 rounded-full hover:bg-blue-700 transition duration-300">View Details</button>
+                </div>
+
+                <!-- Vaayu Card -->
+                <div class="bg-white rounded-lg shadow-lg p-6">
+                    <h3 class="text-xl font-bold mb-2">Vaayu</h3>
+                    <p class="text-gray-600 mb-4">A retail-focused powerhouse with a highly sophisticated, automated, and granular calculation engine.</p>
+                    <button onclick="openModal('vaayu')" class="w-full bg-blue-800 text-white font-bold py-2 px-4 rounded-full hover:bg-blue-700 transition duration-300">View Details</button>
+                </div>
+
+                <!-- NetXero Card -->
+                <div class="bg-white rounded-lg shadow-lg p-6">
+                    <h3 class="text-xl font-bold mb-2">NetXero</h3>
+                    <p class="text-gray-600 mb-4">An accessible and affordable platform designed to remove barriers for SMEs.</p>
+                    <button onclick="openModal('netxero')" class="w-full bg-blue-800 text-white font-bold py-2 px-4 rounded-full hover:bg-blue-700 transition duration-300">View Details</button>
+                </div>
+
+                <!-- Axiom Card -->
+                <div class="bg-white rounded-lg shadow-lg p-6">
+                    <h3 class="text-xl font-bold mb-2">Axiom</h3>
+                    <p class="text-gray-600 mb-4">A broad sustainability platform with strong ESG and social value integration.</p>
+                    <button onclick="openModal('axiom')" class="w-full bg-blue-800 text-white font-bold py-2 px-4 rounded-full hover:bg-blue-700 transition duration-300">View Details</button>
+                </div>
+
+                <!-- SCSS Card -->
+                <div class="bg-white rounded-lg shadow-lg p-6">
+                    <h3 class="text-xl font-bold mb-2">Supply Chain Sustainability School</h3>
+                    <p class="text-gray-600 mb-4">A free, industry-led initiative for the UK built environment sector.</p>
+                    <button onclick="openModal('scss')" class="w-full bg-blue-800 text-white font-bold py-2 px-4 rounded-full hover:bg-blue-700 transition duration-300">View Details</button>
+                </div>
+
+                <!-- Pledge Card -->
+                <div class="bg-white rounded-lg shadow-lg p-6">
+                    <h3 class="text-xl font-bold mb-2">Pledge</h3>
+                    <p class="text-gray-600 mb-4">A hyper-specialized platform for calculating emissions from freight and logistics.</p>
+                    <button onclick="openModal('pledge')" class="w-full bg-blue-800 text-white font-bold py-2 px-4 rounded-full hover:bg-blue-700 transition duration-300">View Details</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Comparison Table Section -->
+    <section id="comparison" class="py-16 bg-white">
+        <div class="container mx-auto px-6">
+            <h2 class="text-3xl font-bold text-center mb-12">Comparative Summary</h2>
+            <div class="overflow-x-auto">
+                <table class="min-w-full bg-white rounded-lg shadow-lg">
+                    <thead class="bg-blue-900 text-white">
+                        <tr>
+                            <th class="py-3 px-4 text-left">Platform</th>
+                            <th class="py-3 px-4 text-left">Primary Function</th>
+                            <th class="py-3 px-4 text-left">Supplier Engagement</th>
+                            <th class="py-3 px-4 text-left">SME Friendliness</th>
+                            <th class="py-3 px-4 text-left">Target Market</th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-gray-700">
+                        <tr class="border-b">
+                            <td class="py-3 px-4 font-semibold">Green Project Tech</td>
+                            <td class="py-3 px-4">End-to-end decarbonization</td>
+                            <td class="py-3 px-4">Excellent</td>
+                            <td class="py-3 px-4">High</td>
+                            <td class="py-3 px-4">Enterprise</td>
+                        </tr>
+                        <tr class="border-b bg-gray-50">
+                            <td class="py-3 px-4 font-semibold">Vaayu</td>
+                            <td class="py-3 px-4">Automated impact calculation</td>
+                            <td class="py-3 px-4">Very Good</td>
+                            <td class="py-3 px-4">Medium</td>
+                            <td class="py-3 px-4">Retail</td>
+                        </tr>
+                        <tr class="border-b">
+                            <td class="py-3 px-4 font-semibold">NetXero</td>
+                            <td class="py-3 px-4">Accessible emissions tracking</td>
+                            <td class="py-3 px-4">Good</td>
+                            <td class="py-3 px-4">Very High</td>
+                            <td class="py-3 px-4">SMEs & Enterprise</td>
+                        </tr>
+                        <tr class="border-b bg-gray-50">
+                            <td class="py-3 px-4 font-semibold">Axiom</td>
+                            <td class="py-3 px-4">Integrated ESG management</td>
+                            <td class="py-3 px-4">Good (in premium tiers)</td>
+                            <td class="py-3 px-4">Medium</td>
+                            <td class="py-3 px-4">Public Sector, Enterprise</td>
+                        </tr>
+                        <tr class="border-b">
+                            <td class="py-3 px-4 font-semibold">SCSS</td>
+                            <td class="py-3 px-4">Free educational calculator</td>
+                            <td class="py-3 px-4">Excellent (educational)</td>
+                            <td class="py-3 px-4">Very High</td>
+                            <td class="py-3 px-4">UK Construction</td>
+                        </tr>
+                        <tr class="bg-gray-50">
+                            <td class="py-3 px-4 font-semibold">Pledge</td>
+                            <td class="py-3 px-4">Logistics emissions</td>
+                            <td class="py-3 px-4">Good (for logistics)</td>
+                            <td class="py-3 px-4">Low (niche)</td>
+                            <td class="py-3 px-4">Logistics</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+
+    <!-- Recommendations Section -->
+    <section id="recommendations" class="py-16">
+        <div class="container mx-auto px-6">
+            <h2 class="text-3xl font-bold text-center mb-12">Our Recommendations</h2>
+            <div class="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">
+                <div class="bg-white rounded-lg shadow-lg p-8">
+                    <h3 class="text-xl font-bold text-blue-900 mb-4">Primary Recommendation</h3>
+                    <p class="text-gray-600 mb-4"><strong class="font-semibold text-gray-800">Green Project Tech</strong> and <strong class="font-semibold text-gray-800">Vaayu</strong> are the strongest contenders. They offer the most advanced features for enabling supplier-led reductions and should be prioritized for product demonstrations.</p>
+                </div>
+                <div class="bg-white rounded-lg shadow-lg p-8">
+                    <h3 class="text-xl font-bold text-blue-900 mb-4">Complementary Strategy</h3>
+                    <p class="text-gray-600 mb-4">Pursue a "Partner" membership with the <strong class="font-semibold text-gray-800">Supply Chain Sustainability School</strong>. This is a cost-effective way to engage our numerous construction and estates suppliers using an industry-standard tool they already know and trust.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-blue-900 text-white py-8">
+        <div class="container mx-auto px-6 text-center">
+            <p>&copy; 2024 University of Exeter. All rights reserved.</p>
+            <p class="text-sm text-blue-300 mt-2">This report was prepared by a Sustainability Analyst for internal evaluation purposes.</p>
+        </div>
+    </footer>
+
+    <!-- Modal -->
+    <div id="modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 hidden">
+        <div id="modal-content" class="bg-white rounded-lg shadow-2xl w-full max-w-3xl max-h-[90vh] overflow-y-auto">
+            <!-- Modal content will be injected here -->
+        </div>
+    </div>
+
+    <script>
+        const modal = document.getElementById('modal');
+        const modalContent = document.getElementById('modal-content');
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+
+        mobileMenuButton.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        const toolData = {
+            gpt: {
+                title: 'Green Project Tech',
+                tabs: {
+                    'Supplier Engagement & Reduction': `
+                        <h4 class="font-bold text-lg mb-2">Direct Supplier Empowerment</h4>
+                        <p class="mb-4">Provides suppliers with a dedicated portal containing free tools to calculate their own footprints, generate Product Carbon Footprints (PCFs), and develop SBTi-aligned Net Zero targets. This transforms suppliers into active participants.</p>
+                        <h4 class="font-bold text-lg mb-2">Tangible Reduction Levers</h4>
+                        <p class="mb-4">Features a unique digital marketplace for procuring high-quality Energy Attribute Certificates (EACs), giving suppliers a direct and accessible way to address their Scope 2 emissions. This action directly reduces the University's Scope 3 footprint.</p>
+                        <h4 class="font-bold text-lg mb-2">Managed Engagement Program</h4>
+                        <p>Automates data access, manages engagement campaigns, verifies supplier calculations, and benchmarks suppliers with scorecards that suggest concrete reduction steps.</p>
+                    `,
+                    'Core Functionality & Methodology': `
+                        <h4 class="font-bold text-lg mb-2">Primary Function</h4>
+                        <p class="mb-4">An end-to-end supply chain decarbonization platform for measurement, management, reporting, and collaborative reduction.</p>
+                        <h4 class="font-bold text-lg mb-2">Methodology</h4>
+                        <p class="mb-4">Employs a robust hybrid methodology, supporting audit-grade, activity-based carbon accounting. The integration of Emitwise's AI enhances its power to handle incomplete data. It is fully compliant with the GHG Protocol.</p>
+                        <h4 class="font-bold text-lg mb-2">Scope Coverage</h4>
+                        <p>Comprehensive coverage of Scope 1, 2, and all 15 Scope 3 categories, with particularly advanced functionality for purchased goods and services.</p>
+                    `,
+                    'Pros & Cons': `
+                        <h4 class="font-bold text-lg mb-2 text-green-600">Pros</h4>
+                        <ul class="list-disc list-inside mb-4">
+                            <li>Unmatched focus on collaborative supplier reduction.</li>
+                            <li>Provides tangible and actionable tools for suppliers (EAC marketplace, PCF calculator).</li>
+                            <li>Strong, purpose-built features to support SMEs.</li>
+                            <li>Audit-grade methodology provides robust data for reporting.</li>
+                        </ul>
+                        <h4 class="font-bold text-lg mb-2 text-red-600">Cons</h4>
+                        <ul class="list-disc list-inside">
+                            <li>Likely to be a premium-priced enterprise solution.</li>
+                            <li>May offer a level of complexity that exceeds immediate requirements.</li>
+                        </ul>
+                    `
+                }
+            },
+            vaayu: {
+                title: 'Vaayu',
+                tabs: {
+                    'Supplier Engagement & Reduction': `
+                        <h4 class="font-bold text-lg mb-2">Data-Driven Reduction Planning</h4>
+                        <p class="mb-4">Offers a single, user-friendly, multi-language portal to streamline primary data collection from suppliers. Engagement is facilitated through automated tools and customizable templates.</p>
+                        <h4 class="font-bold text-lg mb-2">Powerful Reduction Tools</h4>
+                        <p class="mb-4">Allows users to "explore, compare and map reduction scenarios," visualizing how different strategic decisions (e.g., changing materials, switching transport modes) would influence the overall footprint.</p>
+                        <h4 class="font-bold text-lg mb-2">Green Investment ROI Calculator</h4>
+                        <p>A standout feature that helps build a robust business case for sustainability projects by modeling payback periods and long-term financial gains.</p>
+                    `,
+                    'Core Functionality & Methodology': `
+                        <h4 class="font-bold text-lg mb-2">Primary Function</h4>
+                        <p class="mb-4">An automated software platform specializing in real-time, granular calculation of environmental impacts (carbon, water, waste), with a primary focus on the retail ecosystem.</p>
+                        <h4 class="font-bold text-lg mb-2">Methodology</h4>
+                        <p class="mb-4">Uses a primarily activity-based Life Cycle Assessment (LCA) methodology, powered by a proprietary AI engine. This methodology is certified by TÜV Rheinland and aligns with the GHG Protocol.</p>
+                        <h4 class="font-bold text-lg mb-2">Scope Coverage</h4>
+                        <p>Covers Scope 1, 2, and 3 in full, offering exceptional granularity for product-level and transaction-level emissions, with the ability to trace impacts down to Tier 3 suppliers.</p>
+                    `,
+                    'Pros & Cons': `
+                        <h4 class="font-bold text-lg mb-2 text-green-600">Pros</h4>
+                        <ul class="list-disc list-inside mb-4">
+                            <li>Exceptionally advanced, accurate, and certified activity-based LCA methodology.</li>
+                            <li>Powerful built-in scenario modeling and ROI calculator.</li>
+                            <li>Strong capabilities for generating audit-ready reports.</li>
+                        </ul>
+                        <h4 class="font-bold text-lg mb-2 text-red-600">Cons</h4>
+                        <ul class="list-disc list-inside">
+                            <li>Heavily optimized for the retail sector, raising questions about its applicability for a diverse university supply chain.</li>
+                            <li>Data requirements for its LCA engine may be too intensive for many non-retail SMEs.</li>
+                        </ul>
+                    `
+                }
+            },
+            netxero: {
+                title: 'NetXero',
+                tabs: {
+                    'Supplier Engagement & Reduction': `
+                        <h4 class="font-bold text-lg mb-2">Accessible Engagement Tools</h4>
+                        <p class="mb-4">Facilitates engagement through simple features like easy supplier invitations, secure communication portals, document uploads, and automated reminders.</p>
+                        <h4 class="font-bold text-lg mb-2">Practical Reduction Support</h4>
+                        <p>Offers "AI-Powered Recommendations" with personalized advice on carbon reduction, complemented by access to human sustainability experts for tailored guidance. This blend is effective for suppliers at an early stage.</p>
+                    `,
+                    'Core Functionality & Methodology': `
+                        <h4 class="font-bold text-lg mb-2">Primary Function</h4>
+                        <p class="mb-4">A software platform designed to help organizations track, analyse, and reduce carbon emissions across their supplier network.</p>
+                        <h4 class="font-bold text-lg mb-2">Methodology</h4>
+                        <p class="mb-4">Uses a hybrid model that tracks Scope 1, 2, and 3 emissions. The strong emphasis on supplier input via the portal provides a clear pathway from estimated to activity-based data.</p>
+                    `,
+                    'Pros & Cons': `
+                        <h4 class="font-bold text-lg mb-2 text-green-600">Pros</h4>
+                        <ul class="list-disc list-inside mb-4">
+                            <li>Highly accessible and user-friendly for SMEs due to its simple interface and transparent pricing.</li>
+                            <li>Good balance of automated recommendations and human expert support.</li>
+                            <li>Cost-effective pathway to begin a comprehensive supplier engagement program.</li>
+                        </ul>
+                        <h4 class="font-bold text-lg mb-2 text-red-600">Cons</h4>
+                        <ul class="list-disc list-inside">
+                            <li>"AI-powered recommendations" may be less powerful than full scenario modeling.</li>
+                            <li>May lack the deep, audit-grade functionality of higher-end systems.</li>
+                        </ul>
+                    `
+                }
+            },
+            axiom: {
+                title: 'Axiom',
+                tabs: {
+                    'Supplier Engagement & Reduction': `
+                        <h4 class="font-bold text-lg mb-2">Tiered Engagement Features</h4>
+                        <p class="mb-4">The top-tier "Evolve" plan includes a "Supplier Portal" to engage directly with suppliers, support them, and collect actual data. This indicates collaborative functionality is a premium feature.</p>
+                        <h4 class="font-bold text-lg mb-2">Consultative Reduction Approach</h4>
+                        <p>The platform's purpose is to use data insights to "inform your strategy and engage with suppliers on carbon savings," suggesting a user-driven approach rather than built-in reduction planning tools.</p>
+                    `,
+                    'Core Functionality & Methodology': `
+                        <h4 class="font-bold text-lg mb-2">Primary Function</h4>
+                        <p class="mb-4">A comprehensive, cloud-based platform for monitoring and improving overall sustainability performance across Environmental, Social, and Governance (ESG) pillars.</p>
+                        <h4 class="font-bold text-lg mb-2">Methodology</h4>
+                        <p class="mb-4">The core methodology for its entry-level tool is explicitly spend-based. Higher tiers enable the collection of activity-based data, giving it hybrid capability.</p>
+                    `,
+                    'Pros & Cons': `
+                        <h4 class="font-bold text-lg mb-2 text-green-600">Pros</h4>
+                        <ul class="list-disc list-inside mb-4">
+                            <li>Holistic ESG platform that could integrate with the University's 'Social Value' tool.</li>
+                            <li>Clear reporting pathway for UK-specific regulations like SECR.</li>
+                        </ul>
+                        <h4 class="font-bold text-lg mb-2 text-red-600">Cons</h4>
+                        <ul class="list-disc list-inside">
+                            <li>Foundational carbon accounting is spend-based, offering little advantage over existing tools.</li>
+                            <li>Critical supplier engagement features are restricted to the most expensive tiers.</li>
+                        </ul>
+                    `
+                }
+            },
+            scss: {
+                title: 'Supply Chain Sustainability School',
+                tabs: {
+                    'Supplier Engagement & Reduction': `
+                        <h4 class="font-bold text-lg mb-2">Collaborative & Educational</h4>
+                        <p class="mb-4">The tool itself is an engagement mechanism, providing a single, standardized, and free platform for suppliers to report emissions to multiple clients, solving "reporting fatigue."</p>
+                        <h4 class="font-bold text-lg mb-2">Extensive Free Resources</h4>
+                        <p>The School supports the tool with a vast library of free e-learning modules, workshops, and webinars on carbon reduction and sustainability topics.</p>
+                    `,
+                    'Core Functionality & Methodology': `
+                        <h4 class="font-bold text-lg mb-2">Primary Function</h4>
+                        <p class="mb-4">A free, accessible carbon calculator designed to help suppliers in the UK built environment sector measure and report their organisational emissions.</p>
+                        <h4 class="font-bold text-lg mb-2">Methodology</h4>
+                        <p class="mb-4">Uses a hybrid approach where suppliers can input activity data (fuel, materials, waste). Calculations are based on official UK government conversion factors and are GHG Protocol compliant.</p>
+                    `,
+                    'Pros & Cons': `
+                        <h4 class="font-bold text-lg mb-2 text-green-600">Pros</h4>
+                        <ul class="list-disc list-inside mb-4">
+                            <li>Free, simple, and accessible for suppliers, removing cost as a barrier.</li>
+                            <li>Likely already used by many of the University's construction suppliers.</li>
+                            <li>Excellent supporting educational resources.</li>
+                        </ul>
+                        <h4 class="font-bold text-lg mb-2 text-red-600">Cons</h4>
+                        <ul class="list-disc list-inside">
+                            <li>Not a comprehensive solution for all supply chain categories (e.g., IT, lab supplies).</li>
+                            <li>Limited in-platform reduction planning features.</li>
+                            <li>Requires a paid partnership for the University to access data.</li>
+                        </ul>
+                    `
+                }
+            },
+            pledge: {
+                title: 'Pledge',
+                tabs: {
+                    'Supplier Engagement & Reduction': `
+                        <h4 class="font-bold text-lg mb-2">Logistics-Focused Engagement</h4>
+                        <p class="mb-4">Designed to engage logistics suppliers (freight forwarders, carriers) by automating the collection of shipment data and standardizing data formats.</p>
+                        <h4 class="font-bold text-lg mb-2">Data-Driven Reduction</h4>
+                        <p>Enables users to compare logistics suppliers based on carbon intensity and identify reduction opportunities like modal shifting (e.g., air to sea) or using more efficient vehicle fleets. Also provides access to an offsetting marketplace.</p>
+                    `,
+                    'Core Functionality & Methodology': `
+                        <h4 class="font-bold text-lg mb-2">Primary Function</h4>
+                        <p class="mb-4">A dedicated emissions measurement, reporting, and offsetting platform for the global transport and logistics industry.</p>
+                        <h4 class="font-bold text-lg mb-2">Methodology</h4>
+                        <p class="mb-4">Uses a highly accurate, activity-based methodology accredited by the Smart Freight Centre (GLEC Framework) and aligned with ISO 14083, the gold standards for freight emissions.</p>
+                    `,
+                    'Pros & Cons': `
+                        <h4 class="font-bold text-lg mb-2 text-green-600">Pros</h4>
+                        <ul class="list-disc list-inside mb-4">
+                            <li>Best-in-class, accredited methodology for the complex area of logistics emissions.</li>
+                            <li>Extremely valuable for accurately measuring the footprint of inbound goods.</li>
+                        </ul>
+                        <h4 class="font-bold text-lg mb-2 text-red-600">Cons</h4>
+                        <ul class="list-disc list-inside">
+                            <li>Highly niche tool, not suitable as a general-purpose platform for the University's entire supply chain.</li>
+                        </ul>
+                    `
+                }
+            }
+        };
+
+        function openModal(toolKey) {
+            const tool = toolData[toolKey];
+            const tabKeys = Object.keys(tool.tabs);
+
+            let tabsHtml = '';
+            tabKeys.forEach((key, index) => {
+                tabsHtml += `<button class="tab py-2 px-4 border-b-2 ${index === 0 ? 'tab-active' : 'border-transparent text-gray-500'}" onclick="changeTab(this, '${toolKey}', '${key.replace(/'/g, "\\'")}')">${key}</button>`;
+            });
+
+            modalContent.innerHTML = `
+                <div class="p-6">
+                    <div class="flex justify-between items-start">
+                        <h2 class="text-2xl font-bold mb-4 text-blue-900">${tool.title}</h2>
+                        <button onclick="closeModal()" class="text-gray-500 hover:text-gray-800">&times;</button>
+                    </div>
+                    <div class="border-b border-gray-200 mb-4">
+                        <nav class="flex space-x-4">
+                            ${tabsHtml}
+                        </nav>
+                    </div>
+                    <div id="tab-content" class="fade-in">
+                        ${tool.tabs[tabKeys[0]]}
+                    </div>
+                </div>
+            `;
+            modal.classList.remove('hidden');
+        }
+
+        function closeModal() {
+            modal.classList.add('hidden');
+        }
+
+        function changeTab(button, toolKey, tabKey) {
+            // Update active tab style
+            const tabs = button.parentElement.querySelectorAll('.tab');
+            tabs.forEach(t => t.classList.remove('tab-active', 'border-blue-800', 'text-blue-800'));
+            button.classList.add('tab-active', 'border-blue-800', 'text-blue-800');
+
+            // Update tab content
+            const tabContent = document.getElementById('tab-content');
+            tabContent.innerHTML = toolData[toolKey].tabs[tabKey];
+            tabContent.classList.remove('fade-in');
+            void tabContent.offsetWidth; // Trigger reflow
+            tabContent.classList.add('fade-in');
+        }
+
+        // Close modal on escape key press
+        window.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                closeModal();
+            }
+        });
+
+        // Close modal on outside click
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) {
+                closeModal();
+            }
+        });
+
+    </script>
+</body>
+</html>
