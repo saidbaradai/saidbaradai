@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Specialist Carbon Tool Analyzer v3</title>
+    <!-- Chosen Palette: "Strategic Focus" - A sophisticated palette using a deep teal for primary actions and highlights, indicating expertise. A warm amber provides a secondary accent for important callouts, set against professional stone and slate backgrounds. -->
+    <!-- Application Structure Plan: Retaining the successful single-page dashboard, the structure is refined for the new context. 1) Header & Summary now frame the goal as finding a SPECIALIST tool to complement the existing NetPositive platform. 2) The "Tool Explorer" cards now include a "Strategic Fit" icon, immediately classifying each tool's role (Specialist, Generalist, etc.). 3) The "Deep Dive Analysis" section is enhanced. The "Overview" tab now has a dedicated "Strategic Role vs. NetPositive" section, which is the most critical new piece of information. This structure allows users to quickly filter for specialists and then dive into a detailed analysis of how they would coexist with current systems. -->
+    <!-- Visualization & Content Choices: Report Info -> 8-tool comparison. Goal -> Compare specialist tools and their fit with existing systems. Viz/Method -> The Radar Chart and tabbed interface are retained for their clarity. The key change is the addition of the "Strategic Role" section within the tabs. Interaction -> Clicking a tool card updates the chart and the tabbed view. Justification -> This explicitly addresses the new context, allowing a user to see not just if a tool is "good," but if it's the "right type of good" for the university's specific needs, avoiding redundancy with NetPositive. Library -> Chart.js. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc; /* slate-50 */
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 500px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 350px;
+            max-height: 400px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 400px;
+            }
+        }
+        .tool-card {
+            transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+        }
+        .tool-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.07), 0 4px 6px -4px rgb(0 0 0 / 0.07);
+        }
+        .tool-card.active {
+            transform: translateY(-5px) scale(1.02);
+            box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+            border-color: #0d9488; /* teal-600 */
+        }
+        .detail-tab {
+            transition: all 0.2s ease-in-out;
+            border-radius: 6px;
+        }
+        .detail-tab.active {
+            background-color: #0d9488; /* teal-600 */
+            color: white;
+            font-weight: 600;
+        }
+        .smooth-scroll { scroll-behavior: smooth; }
+        .gradient-text {
+            background: linear-gradient(to right, #0d9488, #0f766e);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-stone-800 smooth-scroll">
+
+    <div class="container mx-auto p-4 sm:p-6 lg:p-8 max-w-7xl">
+        
+        <header class="mb-10 md:mb-16 text-center">
+            <h1 class="text-4xl md:text-5xl font-extrabold text-stone-900 mb-3">Specialist Carbon Tool Analysis</h1>
+            <p class="text-lg text-stone-600 max-w-3xl mx-auto">Finding a dedicated carbon accounting partner to complement the University's NetPositive Futures platform.</p>
+        </header>
+
+        <section id="summary" class="bg-white p-6 lg:p-8 rounded-2xl shadow-sm mb-10 md:mb-16 border border-stone-200/80">
+            <h2 class="text-2xl font-bold text-stone-900 mb-4">Executive Summary</h2>
+            <div class="space-y-4 text-stone-700">
+                <p>This analysis evaluates specialist carbon accounting platforms to fill a specific capability gap in the University of Exeter's sustainability toolkit. While the existing **NetPositive Futures** platform is effective for broad sustainability engagement and qualitative reporting, it does not provide the granular, auditable carbon calculation and reduction-modeling features required for a robust Scope 3 decarbonization program. The goal is to identify a tool that excels in this specialist role, avoids supplier-facing costs, and complements NetPositive without creating redundancy or supplier confusion.</p>
+                <p class="font-semibold text-stone-800">Based on this focused evaluation, <strong class="text-teal-600">Green Project Tech</strong> and <strong class="text-teal-600">Sweep</strong> are the top recommendations. They are purpose-built carbon specialists whose free-to-supplier models and deep feature sets directly address the university's needs. <strong class="text-teal-600">Greenly</strong> is a strong third contender, while the <strong class="text-amber-600">SCSS Calculator</strong> is identified as an ideal, no-risk tool for an initial pilot.</p>
+            </div>
+        </section>
+        
+        <section id="tool-explorer" class="mb-10 md:mb-16">
+            <h2 class="text-3xl font-bold text-stone-900 mb-2 text-center">Tool Explorer</h2>
+            <p class="text-stone-600 mb-8 text-center max-w-2xl mx-auto">Click a tool to analyze its performance as a specialist carbon partner. Pay attention to the "Strategic Fit" icon.</p>
+            <div id="tool-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                <!-- Tool cards will be injected here by JS -->
+            </div>
+        </section>
+
+        <section id="deep-dive" class="bg-white p-6 lg:p-8 rounded-2xl shadow-lg border border-stone-200/80">
+            <h2 class="text-3xl font-bold text-stone-900 mb-6 text-center"><span id="selected-tool-name" class="gradient-text">Green Project Tech</span>: Deep Dive Analysis</h2>
+            <div class="grid grid-cols-1 lg:grid-cols-5 gap-8 lg:gap-12">
+                <div class="lg:col-span-2">
+                    <h3 class="text-xl font-bold text-stone-800 mb-4 text-center">Performance Radar</h3>
+                    <div class="chart-container mx-auto">
+                        <canvas id="toolRadarChart"></canvas>
+                    </div>
+                </div>
+                <div id="tool-profile" class="lg:col-span-3">
+                     <!-- Profile content will be injected here by JS -->
+                </div>
+            </div>
+        </section>
+
+        <footer class="mt-10 md:mt-16 bg-stone-800 text-stone-200 p-8 rounded-2xl">
+             <h2 class="text-2xl font-bold text-white mb-4">Conclusion & Next Steps</h2>
+            <div class="space-y-4 text-stone-300">
+                <p>The market offers excellent specialist platforms that can integrate with, rather than replace, existing systems. We recommend prioritizing <strong class="text-teal-300">Green Project Tech</strong> and <strong class="text-teal-300">Sweep</strong> for demonstrations due to their clear focus and supplier-friendly models.</p>
+                <ol class="list-decimal list-inside space-y-3 mt-4">
+                    <li><strong class="text-white">Immediate Action:</strong> Pilot the <strong class="text-amber-300">SCSS Carbon Calculator</strong> with a supplier group to introduce them to quantitative carbon reporting, a perfect complement to their qualitative NetPositive inputs.</li>
+                    <li><strong class="text-white">Short-Term Action:</strong> Schedule demos with <strong class="text-teal-300">Green Project Tech</strong>, <strong class="text-teal-300">Sweep</strong>, and <strong class="text-teal-300">Greenly</strong>.</li>
+                    <li><strong class="text-white">Crucial Intel:</strong> During demos, focus on interoperability. Ask: <strong class="text-amber-300">"How does your platform complement or integrate with data from broader ESG platforms like NetPositive Futures, which our suppliers already use?"</strong></li>
+                </ol>
+            </div>
+        </footer>
+
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const toolData = [
+                {
+                    id: 'gpt',
+                    name: 'Green Project Tech',
+                    recommended: true,
+                    fit: 'Carbon Specialist',
+                    fitIcon: '🎯',
+                    scores: { adoption: 5, cost: 5, features: 4, usability: 4 },
+                    details: {
+                        overview: 'A leading contender focused entirely on supply chain decarbonization. Its core strength is removing cost and knowledge barriers for suppliers in the specific domain of carbon accounting.',
+                        role: 'Acts as a **specialist carbon engine**. It would handle the granular, auditable calculation of Scope 3 emissions, a function NetPositive is not designed for. This creates a clear, complementary relationship with no overlap.',
+                        engagement: 'Provides a free supplier portal with 1:1 support, educational sessions, and dedicated carbon/PCF calculators. Automates data mapping for standards like CDP & SBTi.',
+                        reduction: 'Features a renewable energy procurement marketplace (act50), tailored decarbonization pathways, product carbon footprint (PCF) tools, and supplier scorecards.',
+                        pricing: 'University: Annual Subscription. Suppliers: Explicitly FREE.',
+                        verdict: {
+                            pros: ['Specialist focus complements NetPositive without creating supplier confusion.', 'Completely free for suppliers, removing the main adoption barrier.', 'Offers 1:1 support and education, ideal for non-experts.'],
+                            cons: ['The newness of its Emitwise acquisition could mean short-term UI/UX inconsistencies that need verification.'],
+                        }
+                    }
+                },
+                {
+                    id: 'sweep',
+                    name: 'Sweep',
+                    recommended: true,
+                    fit: 'Carbon Specialist',
+                    fitIcon: '🎯',
+                    scores: { adoption: 5, cost: 5, features: 4, usability: 5 },
+                    details: {
+                        overview: 'A top-tier candidate whose philosophy treats carbon management as a collaborative "network problem." Its standout feature is its unambiguous policy of free access for all value-chain partners.',
+                        role: 'Serves as a **specialist collaborative platform for carbon data**. It would manage the flow of quantitative emissions data, while NetPositive manages qualitative sustainability plans. The roles are distinct and mutually supportive.',
+                        engagement: 'Offers free access for all partners to a collaborative platform. Involves suppliers in joint goal setting and progress tracking, fostering partnership over compliance.',
+                        reduction: 'Includes collaborative reduction tools to set and track shared targets, AI-driven recommendations, and reduction pathway simulations.',
+                        pricing: 'University: Tiered Subscription. Suppliers: Explicitly FREE.',
+                        verdict: {
+                            pros: ['User-centric design rated as a leader by IDC MarketScape.', 'Collaborative model is great for building partnerships on the specific topic of carbon.', 'AI-powered data cleansing simplifies input for all users.'],
+                            cons: ['University-facing pricing can be complex and requires direct confirmation.'],
+                        }
+                    }
+                },
+                {
+                    id: 'greenly',
+                    name: 'Greenly',
+                    recommended: true,
+                    fit: 'Carbon Specialist',
+                    fitIcon: '🎯',
+                    scores: { adoption: 4, cost: 4, features: 3, usability: 5 },
+                    details: {
+                        overview: 'An excellent all-around platform, particularly suited for engaging the full spectrum of suppliers due to its user-centric design and focus on the SMB sector.',
+                        role: 'Functions as a **user-friendly carbon accounting specialist**. Its simplicity would make it an easy "second tool" for suppliers, focused purely on the numbers, complementing the broader narrative captured in NetPositive.',
+                        engagement: 'The "Net Zero Contributor" plan includes a supplier engagement module. The platform focuses on simplifying data requests for suppliers.',
+                        reduction: 'Provides customized action plans, decarbonization strategy building, access to the Greenly Academy, and a library of best practices.',
+                        pricing: 'University: Transparent tiered pricing. Suppliers: No mention of fees.',
+                        verdict: {
+                            pros: ['Highly rated on G2/Capterra for being intuitive and user-friendly.', 'Strong focus on SMBs aligns with a large part of the university\'s supply chain.', 'Transparent pricing for the university removes ambiguity.'],
+                            cons: ['The depth of its proactive reduction tools may be less than more specialized competitors.'],
+                        }
+                    }
+                },
+                {
+                    id: 'scss',
+                    name: 'SCSS Calculator',
+                    recommended: true,
+                    fit: 'Pilot Tool',
+                    fitIcon: '🧪',
+                    scores: { adoption: 4, cost: 5, features: 2, usability: 4 },
+                     details: {
+                        overview: 'An essential, credible, and entirely free resource that serves as an ideal entry point for supplier carbon accounting. Backed by a wealth of free supporting educational resources.',
+                        role: 'A **perfect tactical pilot tool**. It introduces suppliers to the practice of quantitative carbon calculation, which is a different skill set than the qualitative reporting for NetPositive. It helps build momentum for a future specialist tool.',
+                        engagement: 'A free, membership-based tool. Suppliers input data into simple forms and are supported by webinars and educational content from the School.',
+                        reduction: 'Provides a carbon footprint calculation that allows suppliers to understand their impact and identify hotspots, facilitating self-directed reduction.',
+                        pricing: 'University: FREE. Suppliers: FREE.',
+                        verdict: {
+                            pros: ['Completely free, eliminating any cost barrier.', 'Perfect for a no-risk pilot program to build momentum.', 'Backed by a credible industry body with extensive free training resources.'],
+                            cons: ['Lacks sophisticated software-driven reduction features.', 'Narrowly focused on the "built environment" sector.'],
+                        }
+                    }
+                },
+                {
+                    id: 'normative',
+                    name: 'Normative',
+                    recommended: false,
+                    fit: 'Carbon Specialist',
+                    fitIcon: '🎯',
+                    scores: { adoption: 3, cost: 2, features: 4, usability: 3 },
+                    details: {
+                        overview: 'A highly credible, science-first platform that stands out for its blend of technology and expert-led educational services. Its hands-on support is a powerful upskilling mechanism.',
+                        role: 'A **high-end carbon accounting specialist**. It would provide very deep, auditable carbon data to complement NetPositive. The risk is that its complexity and potential supplier-facing costs for advisory services could hinder adoption.',
+                        engagement: 'Engages suppliers via structured surveys, a "Carbon Network" for data exchange, and expert-led workshops to educate them on carbon accounting.',
+                        reduction: 'Offers strategic reduction planning, scenario modeling, hotspot analysis, and expert advisory services to help suppliers build decarbonization plans.',
+                        pricing: 'University: Custom Enterprise Pricing. Suppliers: Cost is unclear; may require paid advisory services.',
+                        verdict: {
+                            pros: ['Strong educational component and expert support.', 'Methodology is extremely rigorous and auditable.'],
+                            cons: ['Unclear and potentially high costs for suppliers.', 'Interface may be too complex for smaller, non-expert suppliers.'],
+                        }
+                    }
+                },
+                {
+                    id: 'carbonchain',
+                    name: 'CarbonChain',
+                    recommended: false,
+                    fit: 'Niche Specialist',
+                    fitIcon: '⚙️',
+                    scores: { adoption: 2, cost: 3, features: 3, usability: 4 },
+                    details: {
+                        overview: 'An interesting candidate with a unique procurement-centric approach, framing carbon data in financial terms to motivate engagement. Designed for commodity-heavy industries.',
+                        role: 'A **niche carbon specialist for commodities**. Its focus is too narrow for the university\'s diverse supply chain and would not be a suitable complement to the broad scope of NetPositive.',
+                        engagement: 'Allows procurement teams to benchmark suppliers and communicate carbon costs, driving engagement through financial incentives.',
+                        reduction: 'Features hotspot analysis to identify high-impact reduction opportunities. Links carbon to financial risk (e.g., CBAM costs).',
+                        pricing: 'University: Custom Pricing. Suppliers: Cost is unclear.',
+                        verdict: {
+                            pros: ['Framing carbon in financial terms is a strong motivator.', 'Intuitive for procurement teams.'],
+                            cons: ['Core methodology is a poor fit for the university\'s service-based suppliers.', 'Unclear pricing model.'],
+                        }
+                    }
+                },
+                {
+                    id: 'axiom',
+                    name: 'Axiom',
+                    recommended: false,
+                    fit: 'ESG Generalist',
+                    fitIcon: '⚠️',
+                    scores: { adoption: 2, cost: 3, features: 2, usability: 3 },
+                    details: {
+                        overview: 'A broad, UK-focused ESG platform. Its strength in holistic ESG tracking is a weakness for this project, as it lacks specialized carbon reduction features.',
+                        role: 'An **ESG Generalist with high overlap risk**. This tool directly competes with NetPositive Futures, attempting to solve the same broad problem. Introducing it would create supplier confusion, tool fatigue, and data fragmentation.',
+                        engagement: 'A centralized platform to "connect and communicate" with suppliers and gather a wide range of ESG data.',
+                        reduction: 'Calculates Scope 1, 2, and 3 emissions but has less focus on providing proactive, software-driven reduction tools.',
+                        pricing: 'University: Custom Pricing. Suppliers: Cost is unclear.',
+                        verdict: {
+                            pros: ['Strong for UK-specific, holistic ESG compliance.'],
+                            cons: ['High risk of creating confusion due to significant overlap with NetPositive.', 'Lacks the specialized carbon reduction features of leading tools.'],
+                        }
+                    }
+                },
+                {
+                    id: 'pledge',
+                    name: 'Pledge',
+                    recommended: false,
+                    fit: 'Niche Specialist',
+                    fitIcon: '⚙️',
+                    scores: { adoption: 1, cost: 2, features: 2, usability: 2 },
+                    details: {
+                        overview: 'A best-in-class specialist platform for a single purpose: calculating emissions from logistics and freight. It is fundamentally unsuitable for the university\'s diverse needs.',
+                        role: 'A **hyper-niche specialist for logistics**. It is far too specialized to serve as a broad Scope 3 carbon tool and would only be relevant for a tiny fraction of the supply chain.',
+                        engagement: 'Automates data collection from logistics suppliers and provides a "Pledge Network" to stay up-to-date with their data.',
+                        reduction: 'Provides granular, accredited emissions data to allow for optimization of transport modes and trade lanes.',
+                        pricing: 'University: Subscription-based. Suppliers: Not applicable.',
+                        verdict: {
+                            pros: ['Gold-standard methodology for logistics.'],
+                            cons: ['Completely unsuitable for non-logistics suppliers, guaranteeing extremely low adoption.', 'Irrelevant for most of the university\'s supply chain.'],
+                        }
+                    }
+                }
+            ];
+
+            const toolGrid = document.getElementById('tool-grid');
+            const toolProfile = document.getElementById('tool-profile');
+            const selectedToolName = document.getElementById('selected-tool-name');
+            const ctx = document.getElementById('toolRadarChart').getContext('2d');
+            let radarChart;
+
+            const chartLabels = ['Supplier Adoption', 'Cost-Effectiveness', 'Reduction Features', 'Ease of Use'];
+            const chartColors = {
+                gpt: 'rgba(13, 148, 136, 0.4)', // teal-600
+                sweep: 'rgba(8, 145, 178, 0.4)', // cyan-600
+                greenly: 'rgba(74, 222, 128, 0.4)', // green-400
+                scss: 'rgba(245, 158, 11, 0.4)', // amber-500
+                normative: 'rgba(167, 139, 250, 0.4)', // violet-400
+                carbonchain: 'rgba(251, 113, 133, 0.4)', // rose-400
+                axiom: 'rgba(239, 68, 68, 0.4)', // red-500
+                pledge: 'rgba(96, 165, 250, 0.4)' // blue-400
+            };
+             const chartBorderColors = {
+                gpt: 'rgb(13, 148, 136)',
+                sweep: 'rgb(8, 145, 178)',
+                greenly: 'rgb(74, 222, 128)',
+                scss: 'rgb(245, 158, 11)',
+                normative: 'rgb(167, 139, 250)',
+                carbonchain: 'rgb(251, 113, 133)',
+                axiom: 'rgb(239, 68, 68)',
+                pledge: 'rgb(96, 165, 250)'
+            };
+
+            function createRadarChart() {
+                const datasets = toolData.map(tool => ({
+                    label: tool.name,
+                    data: [tool.scores.adoption, tool.scores.cost, tool.scores.features, tool.scores.usability],
+                    backgroundColor: chartColors[tool.id],
+                    borderColor: chartBorderColors[tool.id],
+                    borderWidth: 2.5,
+                    pointBackgroundColor: chartBorderColors[tool.id],
+                    pointBorderColor: '#fff',
+                    pointHoverBackgroundColor: '#fff',
+                    pointHoverBorderColor: chartBorderColors[tool.id],
+                    pointRadius: 5,
+                    pointBorderWidth: 2,
+                    hidden: true
+                }));
+
+                if (radarChart) radarChart.destroy();
+
+                radarChart = new Chart(ctx, {
+                    type: 'radar',
+                    data: { labels: chartLabels, datasets: datasets },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        scales: {
+                            r: {
+                                angleLines: { color: 'rgba(0, 0, 0, 0.05)' },
+                                grid: { color: 'rgba(0, 0, 0, 0.08)' },
+                                pointLabels: { font: { size: 13, weight: '600' }, color: '#44403c' },
+                                ticks: {
+                                    beginAtZero: true, min: 0, max: 5, stepSize: 1,
+                                    backdropColor: 'rgba(255, 255, 255, 0.6)',
+                                    color: '#78716c'
+                                }
+                            }
+                        },
+                        plugins: { legend: { display: false } }
+                    }
+                });
+            }
+
+            function displayToolProfile(toolId) {
+                const tool = toolData.find(t => t.id === toolId);
+                if (!tool) return;
+
+                selectedToolName.textContent = tool.name;
+
+                const renderVerdictList = (items, colorClass) => items.map(item => `
+                    <li class="flex items-start">
+                        <span class="${colorClass} mr-3 mt-1 flex-shrink-0 text-lg leading-none">▪</span>
+                        <span>${item}</span>
+                    </li>`).join('');
+
+                toolProfile.innerHTML = `
+                    <div class="flex flex-wrap gap-2 border-b border-stone-200 mb-4 pb-4">
+                        <button data-tab="overview" class="detail-tab flex-grow sm:flex-grow-0 py-2 px-4 text-stone-600 font-medium">Overview</button>
+                        <button data-tab="engagement" class="detail-tab flex-grow sm:flex-grow-0 py-2 px-4 text-stone-600 font-medium">Engagement</button>
+                        <button data-tab="verdict" class="detail-tab flex-grow sm:flex-grow-0 py-2 px-4 text-stone-600 font-medium">Verdict</button>
+                    </div>
+                    <div id="tab-content" class="text-stone-700 space-y-4"></div>
+                `;
+                
+                const tabContentContainer = document.getElementById('tab-content');
+
+                const tabContents = {
+                    overview: `
+                        <p>${tool.details.overview}</p>
+                        <div class="mt-4 pt-4 border-t border-stone-200/80 bg-slate-50 p-4 rounded-lg">
+                            <h4 class="font-bold text-stone-800 mb-2">Strategic Role vs. NetPositive</h4>
+                            <p class="text-sm">${tool.details.role}</p>
+                        </div>`,
+                    engagement: `
+                        <div>
+                            <h4 class="font-bold text-stone-800 mb-2">Supplier Engagement Mechanism</h4>
+                            <p>${tool.details.engagement}</p>
+                        </div>
+                        <div class="mt-4 pt-4 border-t border-stone-200/80">
+                            <h4 class="font-bold text-stone-800 mb-2">Reduction Features</h4>
+                            <p>${tool.details.reduction}</p>
+                        </div>
+                        <div class="mt-4 pt-4 border-t border-stone-200/80">
+                            <h4 class="font-bold text-stone-800 mb-2">Pricing Model</h4>
+                            <p>${tool.details.pricing}</p>
+                        </div>`,
+                    verdict: `
+                        <div>
+                            <h4 class="font-bold text-teal-600 mb-2">Pros</h4>
+                            <ul class="space-y-2">${renderVerdictList(tool.details.verdict.pros, 'text-teal-500')}</ul>
+                        </div>
+                        <div class="mt-4 pt-4 border-t border-stone-200/80">
+                            <h4 class="font-bold text-amber-600 mb-2">Cons</h4>
+                            <ul class="space-y-2">${renderVerdictList(tool.details.verdict.cons, 'text-amber-500')}</ul>
+                        </div>`
+                };
+
+                const setActiveTab = (tabName) => {
+                    tabContentContainer.innerHTML = tabContents[tabName];
+                    document.querySelectorAll('.detail-tab').forEach(tab => {
+                        tab.classList.toggle('active', tab.dataset.tab === tabName);
+                    });
+                };
+                
+                document.querySelectorAll('.detail-tab').forEach(tab => {
+                    tab.addEventListener('click', () => setActiveTab(tab.dataset.tab));
+                });
+
+                setActiveTab('overview');
+            }
+
+            function updateActiveCard(toolId) {
+                document.querySelectorAll('.tool-card').forEach(card => {
+                    card.classList.toggle('active', card.dataset.toolId === toolId);
+                });
+            }
+            
+            function updateChartVisibility(toolId) {
+                radarChart.data.datasets.forEach(dataset => {
+                    const currentTool = toolData.find(t => t.name === dataset.label);
+                    dataset.hidden = currentTool.id !== toolId;
+                });
+                radarChart.update();
+            }
+
+            function handleToolSelection(toolId) {
+                displayToolProfile(toolId);
+                updateActiveCard(toolId);
+                updateChartVisibility(toolId);
+                document.getElementById('deep-dive').scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+
+            // Populate tool grid
+            toolData.forEach(tool => {
+                const card = document.createElement('div');
+                card.className = `tool-card bg-white p-5 rounded-xl border-2 border-transparent shadow-sm cursor-pointer relative`;
+                card.dataset.toolId = tool.id;
+                card.innerHTML = `
+                    ${tool.recommended ? '<span class="absolute top-0 right-0 -mt-2 -mr-2 flex h-6 w-6"><span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-teal-400 opacity-75"></span><span class="relative inline-flex rounded-full h-6 w-6 bg-teal-500 text-white items-center justify-center text-xs font-bold">★</span></span>' : ''}
+                    <div class="flex items-center mb-2">
+                        <span class="text-xl mr-3">${tool.fitIcon}</span>
+                        <div>
+                            <h3 class="font-bold text-lg text-stone-800 leading-tight">${tool.name}</h3>
+                            <p class="text-stone-500 text-xs font-medium">${tool.fit}</p>
+                        </div>
+                    </div>
+                `;
+                card.addEventListener('click', () => handleToolSelection(tool.id));
+                toolGrid.appendChild(card);
+            });
+
+            // Initial state
+            const initialToolId = 'gpt';
+            createRadarChart();
+            handleToolSelection(initialToolId);
+        });
+    </script>
+</body>
+</html>
