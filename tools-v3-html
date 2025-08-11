@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Specialist Carbon Tool Analyzer v3</title>
+    <title>Specialist Carbon Tool Analyzer v4</title>
     <!-- Chosen Palette: "Strategic Focus" - A sophisticated palette using a deep teal for primary actions and highlights, indicating expertise. A warm amber provides a secondary accent for important callouts, set against professional stone and slate backgrounds. -->
     <!-- Application Structure Plan: Retaining the successful single-page dashboard, the structure is refined for the new context. 1) Header & Summary now frame the goal as finding a SPECIALIST tool to complement the existing NetPositive platform. 2) The "Tool Explorer" cards now include a "Strategic Fit" icon, immediately classifying each tool's role (Specialist, Generalist, etc.). 3) The "Deep Dive Analysis" section is enhanced. The "Overview" tab now has a dedicated "Strategic Role vs. NetPositive" section, which is the most critical new piece of information. This structure allows users to quickly filter for specialists and then dive into a detailed analysis of how they would coexist with current systems. -->
     <!-- Visualization & Content Choices: Report Info -> 8-tool comparison. Goal -> Compare specialist tools and their fit with existing systems. Viz/Method -> The Radar Chart and tabbed interface are retained for their clarity. The key change is the addition of the "Strategic Role" section within the tabs. Interaction -> Clicking a tool card updates the chart and the tabbed view. Justification -> This explicitly addresses the new context, allowing a user to see not just if a tool is "good," but if it's the "right type of good" for the university's specific needs, avoiding redundancy with NetPositive. Library -> Chart.js. -->
@@ -73,7 +73,7 @@
         <section id="summary" class="bg-white p-6 lg:p-8 rounded-2xl shadow-sm mb-10 md:mb-16 border border-stone-200/80">
             <h2 class="text-2xl font-bold text-stone-900 mb-4">Executive Summary</h2>
             <div class="space-y-4 text-stone-700">
-                <p>This analysis evaluates specialist carbon accounting platforms to fill a specific capability gap in the University of Exeter's sustainability toolkit. While the existing **NetPositive Futures** platform is effective for broad sustainability engagement and qualitative reporting, it does not provide the granular, auditable carbon calculation and reduction-modeling features required for a robust Scope 3 decarbonization program. The goal is to identify a tool that excels in this specialist role, avoids supplier-facing costs, and complements NetPositive without creating redundancy or supplier confusion.</p>
+                <p>This analysis evaluates specialist carbon accounting platforms to fill a specific capability gap in the University of Exeter's sustainability toolkit. While the existing <strong class="font-semibold text-stone-800">NetPositive Futures</strong> platform is effective for broad sustainability engagement and qualitative reporting, it does not provide the granular, auditable carbon calculation and reduction-modeling features required for a robust Scope 3 decarbonization program. The goal is to identify a tool that excels in this specialist role, avoids supplier-facing costs, and complements NetPositive without creating redundancy or supplier confusion.</p>
                 <p class="font-semibold text-stone-800">Based on this focused evaluation, <strong class="text-teal-600">Green Project Tech</strong> and <strong class="text-teal-600">Sweep</strong> are the top recommendations. They are purpose-built carbon specialists whose free-to-supplier models and deep feature sets directly address the university's needs. <strong class="text-teal-600">Greenly</strong> is a strong third contender, while the <strong class="text-amber-600">SCSS Calculator</strong> is identified as an ideal, no-risk tool for an initial pilot.</p>
             </div>
         </section>
@@ -127,7 +127,7 @@
                     scores: { adoption: 5, cost: 5, features: 4, usability: 4 },
                     details: {
                         overview: 'A leading contender focused entirely on supply chain decarbonization. Its core strength is removing cost and knowledge barriers for suppliers in the specific domain of carbon accounting.',
-                        role: 'Acts as a **specialist carbon engine**. It would handle the granular, auditable calculation of Scope 3 emissions, a function NetPositive is not designed for. This creates a clear, complementary relationship with no overlap.',
+                        role: 'Acts as a <strong class="font-semibold text-stone-800">specialist carbon engine</strong>. It would handle the granular, auditable calculation of Scope 3 emissions, a function NetPositive is not designed for. This creates a clear, complementary relationship with no overlap.',
                         engagement: 'Provides a free supplier portal with 1:1 support, educational sessions, and dedicated carbon/PCF calculators. Automates data mapping for standards like CDP & SBTi.',
                         reduction: 'Features a renewable energy procurement marketplace (act50), tailored decarbonization pathways, product carbon footprint (PCF) tools, and supplier scorecards.',
                         pricing: 'University: Annual Subscription. Suppliers: Explicitly FREE.',
@@ -146,7 +146,7 @@
                     scores: { adoption: 5, cost: 5, features: 4, usability: 5 },
                     details: {
                         overview: 'A top-tier candidate whose philosophy treats carbon management as a collaborative "network problem." Its standout feature is its unambiguous policy of free access for all value-chain partners.',
-                        role: 'Serves as a **specialist collaborative platform for carbon data**. It would manage the flow of quantitative emissions data, while NetPositive manages qualitative sustainability plans. The roles are distinct and mutually supportive.',
+                        role: 'Serves as a <strong class="font-semibold text-stone-800">specialist collaborative platform for carbon data</strong>. It would manage the flow of quantitative emissions data, while NetPositive manages qualitative sustainability plans. The roles are distinct and mutually supportive.',
                         engagement: 'Offers free access for all partners to a collaborative platform. Involves suppliers in joint goal setting and progress tracking, fostering partnership over compliance.',
                         reduction: 'Includes collaborative reduction tools to set and track shared targets, AI-driven recommendations, and reduction pathway simulations.',
                         pricing: 'University: Tiered Subscription. Suppliers: Explicitly FREE.',
@@ -165,7 +165,7 @@
                     scores: { adoption: 4, cost: 4, features: 3, usability: 5 },
                     details: {
                         overview: 'An excellent all-around platform, particularly suited for engaging the full spectrum of suppliers due to its user-centric design and focus on the SMB sector.',
-                        role: 'Functions as a **user-friendly carbon accounting specialist**. Its simplicity would make it an easy "second tool" for suppliers, focused purely on the numbers, complementing the broader narrative captured in NetPositive.',
+                        role: 'Functions as a <strong class="font-semibold text-stone-800">user-friendly carbon accounting specialist</strong>. Its simplicity would make it an easy "second tool" for suppliers, focused purely on the numbers, complementing the broader narrative captured in NetPositive.',
                         engagement: 'The "Net Zero Contributor" plan includes a supplier engagement module. The platform focuses on simplifying data requests for suppliers.',
                         reduction: 'Provides customized action plans, decarbonization strategy building, access to the Greenly Academy, and a library of best practices.',
                         pricing: 'University: Transparent tiered pricing. Suppliers: No mention of fees.',
@@ -180,11 +180,11 @@
                     name: 'SCSS Calculator',
                     recommended: true,
                     fit: 'Pilot Tool',
-                    fitIcon: '🧪',
+                    fitIcon: '�',
                     scores: { adoption: 4, cost: 5, features: 2, usability: 4 },
                      details: {
                         overview: 'An essential, credible, and entirely free resource that serves as an ideal entry point for supplier carbon accounting. Backed by a wealth of free supporting educational resources.',
-                        role: 'A **perfect tactical pilot tool**. It introduces suppliers to the practice of quantitative carbon calculation, which is a different skill set than the qualitative reporting for NetPositive. It helps build momentum for a future specialist tool.',
+                        role: 'A <strong class="font-semibold text-stone-800">perfect tactical pilot tool</strong>. It introduces suppliers to the practice of quantitative carbon calculation, which is a different skill set than the qualitative reporting for NetPositive. It helps build momentum for a future specialist tool.',
                         engagement: 'A free, membership-based tool. Suppliers input data into simple forms and are supported by webinars and educational content from the School.',
                         reduction: 'Provides a carbon footprint calculation that allows suppliers to understand their impact and identify hotspots, facilitating self-directed reduction.',
                         pricing: 'University: FREE. Suppliers: FREE.',
@@ -203,7 +203,7 @@
                     scores: { adoption: 3, cost: 2, features: 4, usability: 3 },
                     details: {
                         overview: 'A highly credible, science-first platform that stands out for its blend of technology and expert-led educational services. Its hands-on support is a powerful upskilling mechanism.',
-                        role: 'A **high-end carbon accounting specialist**. It would provide very deep, auditable carbon data to complement NetPositive. The risk is that its complexity and potential supplier-facing costs for advisory services could hinder adoption.',
+                        role: 'A <strong class="font-semibold text-stone-800">high-end carbon accounting specialist</strong>. It would provide very deep, auditable carbon data to complement NetPositive. The risk is that its complexity and potential supplier-facing costs for advisory services could hinder adoption.',
                         engagement: 'Engages suppliers via structured surveys, a "Carbon Network" for data exchange, and expert-led workshops to educate them on carbon accounting.',
                         reduction: 'Offers strategic reduction planning, scenario modeling, hotspot analysis, and expert advisory services to help suppliers build decarbonization plans.',
                         pricing: 'University: Custom Enterprise Pricing. Suppliers: Cost is unclear; may require paid advisory services.',
@@ -222,7 +222,7 @@
                     scores: { adoption: 2, cost: 3, features: 3, usability: 4 },
                     details: {
                         overview: 'An interesting candidate with a unique procurement-centric approach, framing carbon data in financial terms to motivate engagement. Designed for commodity-heavy industries.',
-                        role: 'A **niche carbon specialist for commodities**. Its focus is too narrow for the university\'s diverse supply chain and would not be a suitable complement to the broad scope of NetPositive.',
+                        role: 'A <strong class="font-semibold text-stone-800">niche carbon specialist for commodities</strong>. Its focus is too narrow for the university\'s diverse supply chain and would not be a suitable complement to the broad scope of NetPositive.',
                         engagement: 'Allows procurement teams to benchmark suppliers and communicate carbon costs, driving engagement through financial incentives.',
                         reduction: 'Features hotspot analysis to identify high-impact reduction opportunities. Links carbon to financial risk (e.g., CBAM costs).',
                         pricing: 'University: Custom Pricing. Suppliers: Cost is unclear.',
@@ -241,7 +241,7 @@
                     scores: { adoption: 2, cost: 3, features: 2, usability: 3 },
                     details: {
                         overview: 'A broad, UK-focused ESG platform. Its strength in holistic ESG tracking is a weakness for this project, as it lacks specialized carbon reduction features.',
-                        role: 'An **ESG Generalist with high overlap risk**. This tool directly competes with NetPositive Futures, attempting to solve the same broad problem. Introducing it would create supplier confusion, tool fatigue, and data fragmentation.',
+                        role: 'An <strong class="font-semibold text-stone-800">ESG Generalist with high overlap risk</strong>. This tool directly competes with NetPositive Futures, attempting to solve the same broad problem. Introducing it would create supplier confusion, tool fatigue, and data fragmentation.',
                         engagement: 'A centralized platform to "connect and communicate" with suppliers and gather a wide range of ESG data.',
                         reduction: 'Calculates Scope 1, 2, and 3 emissions but has less focus on providing proactive, software-driven reduction tools.',
                         pricing: 'University: Custom Pricing. Suppliers: Cost is unclear.',
@@ -260,7 +260,7 @@
                     scores: { adoption: 1, cost: 2, features: 2, usability: 2 },
                     details: {
                         overview: 'A best-in-class specialist platform for a single purpose: calculating emissions from logistics and freight. It is fundamentally unsuitable for the university\'s diverse needs.',
-                        role: 'A **hyper-niche specialist for logistics**. It is far too specialized to serve as a broad Scope 3 carbon tool and would only be relevant for a tiny fraction of the supply chain.',
+                        role: 'A <strong class="font-semibold text-stone-800">hyper-niche specialist for logistics</strong>. It is far too specialized to serve as a broad Scope 3 carbon tool and would only be relevant for a tiny fraction of the supply chain.',
                         engagement: 'Automates data collection from logistics suppliers and provides a "Pledge Network" to stay up-to-date with their data.',
                         reduction: 'Provides granular, accredited emissions data to allow for optimization of transport modes and trade lanes.',
                         pricing: 'University: Subscription-based. Suppliers: Not applicable.',
@@ -280,14 +280,14 @@
 
             const chartLabels = ['Supplier Adoption', 'Cost-Effectiveness', 'Reduction Features', 'Ease of Use'];
             const chartColors = {
-                gpt: 'rgba(13, 148, 136, 0.4)', // teal-600
-                sweep: 'rgba(8, 145, 178, 0.4)', // cyan-600
-                greenly: 'rgba(74, 222, 128, 0.4)', // green-400
-                scss: 'rgba(245, 158, 11, 0.4)', // amber-500
-                normative: 'rgba(167, 139, 250, 0.4)', // violet-400
-                carbonchain: 'rgba(251, 113, 133, 0.4)', // rose-400
-                axiom: 'rgba(239, 68, 68, 0.4)', // red-500
-                pledge: 'rgba(96, 165, 250, 0.4)' // blue-400
+                gpt: 'rgba(13, 148, 136, 0.4)',
+                sweep: 'rgba(8, 145, 178, 0.4)',
+                greenly: 'rgba(74, 222, 128, 0.4)',
+                scss: 'rgba(245, 158, 11, 0.4)',
+                normative: 'rgba(167, 139, 250, 0.4)',
+                carbonchain: 'rgba(251, 113, 133, 0.4)',
+                axiom: 'rgba(239, 68, 68, 0.4)',
+                pledge: 'rgba(96, 165, 250, 0.4)'
             };
              const chartBorderColors = {
                 gpt: 'rgb(13, 148, 136)',
@@ -301,22 +301,27 @@
             };
 
             function createRadarChart() {
-                const datasets = toolData.map(tool => ({
-                    label: tool.name,
-                    data: [tool.scores.adoption, tool.scores.cost, tool.scores.features, tool.scores.usability],
-                    backgroundColor: chartColors[tool.id],
-                    borderColor: chartBorderColors[tool.id],
-                    borderWidth: 2.5,
-                    pointBackgroundColor: chartBorderColors[tool.id],
-                    pointBorderColor: '#fff',
-                    pointHoverBackgroundColor: '#fff',
-                    pointHoverBorderColor: chartBorderColors[tool.id],
-                    pointRadius: 5,
-                    pointBorderWidth: 2,
-                    hidden: true
-                }));
+                if (radarChart) {
+                    radarChart.destroy();
+                }
 
-                if (radarChart) radarChart.destroy();
+                const datasets = toolData.map(tool => {
+                    const scores = tool.scores;
+                    return {
+                        label: tool.name,
+                        data: [scores.adoption, scores.cost, scores.features, scores.usability],
+                        backgroundColor: chartColors[tool.id],
+                        borderColor: chartBorderColors[tool.id],
+                        borderWidth: 2.5,
+                        pointBackgroundColor: chartBorderColors[tool.id],
+                        pointBorderColor: '#fff',
+                        pointHoverBackgroundColor: '#fff',
+                        pointHoverBorderColor: chartBorderColors[tool.id],
+                        pointRadius: 5,
+                        pointBorderWidth: 2,
+                        hidden: true
+                    };
+                });
 
                 radarChart = new Chart(ctx, {
                     type: 'radar',
@@ -418,7 +423,7 @@
             function updateChartVisibility(toolId) {
                 radarChart.data.datasets.forEach(dataset => {
                     const currentTool = toolData.find(t => t.name === dataset.label);
-                    dataset.hidden = currentTool.id !== toolId;
+                    dataset.hidden = !currentTool || currentTool.id !== toolId;
                 });
                 radarChart.update();
             }
@@ -457,3 +462,4 @@
     </script>
 </body>
 </html>
+�
