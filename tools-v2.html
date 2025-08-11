@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Scope 3 Tool Analyzer</title>
+    <!-- Chosen Palette: "Calm Harmony" - A palette grounded in warm neutrals (bg-stone-50, bg-white) with slate and amber for accents, creating a professional, supportive, and calm visual environment. -->
+    <!-- Application Structure Plan: A single-page dashboard design was chosen to provide a non-linear, user-driven exploration path. The structure is: 1) Header & Executive Summary for immediate context. 2) An Interactive Comparison section with a filterable chart and tool selector. This allows users to visually compare tools based on key university priorities (Cost, Adoption, Features, Usability) rather than a static table, which is more engaging and insightful. 3) A Detailed View pane that dynamically updates. This structure enables users to get a high-level overview and then drill down into specific tools without losing context, directly addressing the goal of making the report's dense information easily consumable and explorable. -->
+    <!-- Visualization & Content Choices: Report Info -> 8-tool comparison. Goal -> Compare tools against 4 key priorities. Viz/Method -> Interactive Radar Chart (Chart.js/Canvas) and clickable cards. Interaction -> Clicking a card highlights the tool on the chart and shows its detailed profile. Justification -> A radar chart is excellent for comparing multiple entities across several common variables, providing an instant visual summary of a tool's strengths and weaknesses relative to others. This is more intuitive than reading rows of a table. Detailed text is dynamically shown on demand, reducing initial cognitive load. Library -> Chart.js was chosen for its robust, responsive, and non-SVG charting capabilities. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc; /* slate-50 */
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 300px;
+            max-height: 450px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 400px;
+            }
+        }
+        .tool-card.active {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+            border-color: #f59e0b; /* amber-500 */
+        }
+        .smooth-scroll {
+            scroll-behavior: smooth;
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 smooth-scroll">
+
+    <div class="container mx-auto p-4 sm:p-6 lg:p-8">
+        
+        <!-- Header and Executive Summary -->
+        <header class="mb-8 md:mb-12 text-center">
+            <h1 class="text-3xl md:text-4xl font-bold text-slate-900 mb-2">Scope 3 Carbon Accounting Tool Analysis</h1>
+            <p class="text-lg text-slate-600">An interactive guide for the University of Exeter</p>
+        </header>
+
+        <section id="summary" class="bg-white p-6 rounded-2xl shadow-sm mb-8 md:mb-12">
+            <h2 class="text-2xl font-bold text-slate-900 mb-4 flex items-center">
+                <span class="text-amber-500 mr-3">➔</span>
+                Executive Summary
+            </h2>
+            <div class="space-y-4 text-slate-700">
+                <p>This interactive dashboard evaluates carbon accounting platforms to support the University of Exeter's Scope 3 decarbonization strategy, aiming to find a user-friendly and cost-effective solution that avoids the pitfalls of past experiences. The core objective is to identify a tool that excels at supplier engagement, providing educational resources and actionable reduction plans for a diverse supply chain.</p>
+                <p>The analysis synthesized findings from a mandated list and independent research, focusing on eight leading tools. Each was evaluated against a weighted hierarchy of priorities: 1) Supplier Ease of Use & Adoption, 2) Cost (especially avoiding supplier fees), 3) Quality of Reduction Features, and 4) Administrative Ease of Use.</p>
+                <p class="font-semibold">Based on this evaluation, <strong class="text-slate-900">Green Project Tech</strong> and <strong class="text-slate-900">Sweep</strong> are the top recommendations due to their robust, supplier-centric, and free-to-supplier models. <strong class="text-slate-900">Greenly</strong> is a strong third contender, with the <strong class="text-slate-900">SCSS Carbon Calculator</strong> identified as a valuable, no-risk tool for immediate piloting.</p>
+            </div>
+        </section>
+
+        <!-- Interactive Comparison Section -->
+        <main class="grid grid-cols-1 lg:grid-cols-3 gap-8 md:gap-12">
+            
+            <!-- Left Panel: Tool Selection -->
+            <aside class="lg:col-span-1">
+                <div class="bg-white p-6 rounded-2xl shadow-sm sticky top-8">
+                    <h2 class="text-2xl font-bold text-slate-900 mb-4">Select a Tool</h2>
+                    <p class="text-slate-600 mb-6">Click a tool to view its detailed profile and highlight it on the comparison chart. The top recommendations are listed first.</p>
+                    <div id="tool-list" class="space-y-3">
+                        <!-- Tool cards will be injected here by JS -->
+                    </div>
+                </div>
+            </aside>
+
+            <!-- Right Panel: Chart and Details -->
+            <div class="lg:col-span-2">
+                <!-- Comparison Chart -->
+                <section id="comparison-chart" class="bg-white p-6 rounded-2xl shadow-sm mb-8">
+                    <h2 class="text-2xl font-bold text-slate-900 mb-2">Tool Comparison Radar</h2>
+                    <p class="text-slate-600 mb-4">This chart visually compares the top tools against the University's key priorities. A larger shape indicates better alignment with our goals. Scores are on a 1-5 scale based on the source report's findings.</p>
+                    <div class="chart-container mx-auto">
+                        <canvas id="toolRadarChart"></canvas>
+                    </div>
+                </section>
+
+                <!-- Detailed Tool Profile -->
+                <section id="tool-profile" class="bg-white p-6 rounded-2xl shadow-sm">
+                    <!-- Profile content will be injected here by JS -->
+                </section>
+            </div>
+        </main>
+
+        <!-- Conclusion and Next Steps -->
+        <footer class="mt-8 md:mt-12 bg-white p-6 rounded-2xl shadow-sm">
+             <h2 class="text-2xl font-bold text-slate-900 mb-4 flex items-center">
+                <span class="text-amber-500 mr-3">✓</span>
+                Conclusion & Next Steps
+            </h2>
+            <div class="space-y-4 text-slate-700">
+                <p>A new generation of carbon accounting platforms offers solutions designed to overcome previous adoption barriers. It is recommended that the university prioritizes <strong class="text-slate-900">Green Project Tech</strong> and <strong class="text-slate-900">Sweep</strong> for in-depth demonstrations, with <strong class="text-slate-900">Greenly</strong> as a strong third alternative.</p>
+                <ol class="list-decimal list-inside space-y-3">
+                    <li><strong class="text-slate-800">Immediate Action:</strong> Launch a no-risk pilot program with a receptive group of suppliers using the <strong class="text-slate-900">Supply Chain Sustainability School's free Carbon Calculator</strong> to build momentum and internal experience.</li>
+                    <li><strong class="text-slate-800">Short-Term Action:</strong> Schedule one-hour, in-depth demonstrations with the top three candidates: <strong class="text-slate-900">Green Project Tech</strong>, <strong class="text-slate-900">Sweep</strong>, and <strong class="text-slate-900">Greenly</strong>.</li>
+                    <li><strong class="text-slate-800">Actionable Intelligence:</strong> During demos, confirm unequivocally that there are <strong class="text-slate-900">zero mandatory costs or hidden fees for suppliers</strong> to use the core platform functionalities.</li>
+                </ol>
+            </div>
+        </footer>
+
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const toolData = [
+                {
+                    id: 'gpt',
+                    name: 'Green Project Tech',
+                    recommended: true,
+                    scores: { adoption: 5, cost: 5, features: 4, usability: 4 },
+                    focus: 'Supply Chain Decarbonization & Scope 3 Management',
+                    engagement: 'Free supplier portal with 1:1 support, educational sessions, dedicated carbon/PCF calculators, and automated data mapping.',
+                    reductionFeatures: 'Renewable energy procurement marketplace (act50), tailored decarbonization pathways, product carbon footprint (PCF) tools, supplier scorecards.',
+                    pricing: 'Annual subscription for university. Explicitly free for suppliers.',
+                    ux: 'Described as user-friendly and clear. Recent acquisition of Emitwise may introduce UI integration complexities to verify.',
+                    methodology: 'Activity-based data collection via integrations & surveys. Uses AI-powered engine and 30k+ factor database from Emitwise acquisition. Audited by TÜV Rheinland.',
+                    summary: 'A leading contender focused entirely on supply chain decarbonization, greatly enhanced by its acquisition of Emitwise. Its core strength is providing free, fully-managed corporate and product carbon footprint calculators to all suppliers, removing cost and knowledge barriers. The primary risk is the newness of the Emitwise integration, which needs to be verified.'
+                },
+                {
+                    id: 'sweep',
+                    name: 'Sweep',
+                    recommended: true,
+                    scores: { adoption: 5, cost: 5, features: 4, usability: 5 },
+                    focus: 'Collaborative Carbon & ESG Data Management',
+                    engagement: 'Free access for all value-chain partners to a collaborative platform. Involves suppliers in joint goal setting and progress tracking.',
+                    reductionFeatures: 'Collaborative reduction tools to set and track shared targets, AI-driven recommendations, and reduction pathway simulations.',
+                    pricing: 'Tiered subscription for university. Explicitly free for suppliers.',
+                    ux: 'User-centric design focused on collaboration. AI-powered data cleansing simplifies input for all users. Rated as a leader by IDC MarketScape.',
+                    methodology: 'Network-based model treating carbon as a shared data problem. Uses AI-powered tools for data ingestion, cleansing, and management across all 15 Scope 3 categories.',
+                    summary: 'A top-tier candidate whose philosophy treats carbon management as a collaborative "network problem." Its most compelling feature is its unambiguous policy of free access for all value-chain partners, directly addressing the university\'s core challenge. It fosters partnership over compliance, and its AI-powered data automation reduces administrative burden.'
+                },
+                {
+                    id: 'greenly',
+                    name: 'Greenly',
+                    recommended: true,
+                    scores: { adoption: 4, cost: 4, features: 3, usability: 5 },
+                    focus: 'All-in-One Sustainability Platform for SMBs & Mid-Market',
+                    engagement: '"Net Zero Contributor" plan includes a supplier engagement module. Focus on simplifying data requests for suppliers.',
+                    reductionFeatures: 'Customized action plans, decarbonization strategy building, access to Greenly Academy, and a library of best practices.',
+                    pricing: 'Transparent tiered pricing for university. No mention of supplier-facing fees.',
+                    ux: 'Highly rated on G2/Capterra for being intuitive and user-friendly, especially for SMBs. Praised for its simple, clean interface.',
+                    methodology: 'Automated data collection via accounting/ERP integration. Applies verified emission factors from ADEME, GHG Protocol, etc. to calculate footprint.',
+                    summary: 'An excellent all-around platform, particularly suited for engaging the full spectrum of suppliers due to its user-centric design and focus on the SMB sector. It removes both cost and complexity barriers with transparent pricing and a highly-rated intuitive interface. A potential weakness to probe is the depth of its proactive reduction tools compared to competitors.'
+                },
+                {
+                    id: 'scss',
+                    name: 'SCSS Calculator',
+                    recommended: true,
+                    scores: { adoption: 4, cost: 5, features: 2, usability: 4 },
+                    focus: 'Free Carbon Calculator for the Built Environment Supply Chain',
+                    engagement: 'Free membership-based tool. Suppliers input data into simple forms. Supported by webinars and educational resources from the School.',
+                    reductionFeatures: 'Provides a carbon footprint calculation that allows suppliers to understand their impact and identify hotspots, facilitating self-directed reduction.',
+                    pricing: 'Completely free for the university and all suppliers.',
+                    ux: 'Praised in case studies for being an "easily accessible platform" and simple to use for its target audience.',
+                    methodology: 'Uses official UK government conversion factors and BATH ICE factors for construction materials. Aligned with GHG Protocol.',
+                    summary: 'An essential, credible, and entirely free resource that serves as an ideal entry point. It completely eliminates the cost barrier and is backed by a wealth of free supporting educational resources. Its primary limitations are a lack of sophisticated software-driven reduction features and a narrow sector focus on the "built environment."'
+                },
+                {
+                    id: 'normative',
+                    name: 'Normative',
+                    recommended: false,
+                    scores: { adoption: 3, cost: 2, features: 4, usability: 3 },
+                    focus: 'Science-Based Carbon Accounting & Net-Zero Strategy',
+                    engagement: 'Supplier engagement via structured surveys, a "Carbon Network" for data exchange, and expert-led workshops to educate suppliers.',
+                    reductionFeatures: 'Strategic reduction planning, scenario modeling, hotspot analysis, and expert advisory services to help suppliers build decarbonization plans.',
+                    pricing: 'Custom enterprise pricing for university. Supplier cost is unclear; may require paid advisory services for full benefit.',
+                    ux: 'Described as comprehensive with insightful dashboards. Potentially more complex, targeting large organizations with dedicated teams.',
+                    methodology: 'Hybrid methodology (spend, activity, supplier-specific) aligned with GHG Protocol. Leverages a massive database of 330k+ emission factors.',
+                    summary: 'A highly credible, science-first platform that stands out for its blend of technology and expert-led educational services. Its hands-on support is a powerful upskilling mechanism. The most significant risk is the unclear supplier cost model and an emphasis on paid advisory services, which could recreate the high-cost barrier the university seeks to avoid.'
+                },
+                {
+                    id: 'carbonchain',
+                    name: 'CarbonChain',
+                    recommended: false,
+                    scores: { adoption: 2, cost: 3, features: 3, usability: 4 },
+                    focus: 'Procurement-Focused Carbon Accounting for Commodity Supply Chains',
+                    engagement: 'Platform allows procurement teams to benchmark suppliers and communicate carbon costs, driving engagement through financial incentives.',
+                    reductionFeatures: 'Hotspot analysis to identify high-impact reduction opportunities. Links carbon to financial risk (e.g., CBAM costs).',
+                    pricing: 'Custom pricing. Supplier cost is unclear.',
+                    ux: 'Designed to be intuitive for procurement and non-technical stakeholders. Allows for insights without initial data import.',
+                    methodology: 'Uses asset-level data for high-carbon sectors combined with AI and human verification. Methodology validated by SGS against GHG Protocol.',
+                    summary: 'An interesting candidate with a unique procurement-centric approach, framing carbon data in financial terms. However, its core methodology is built for high-carbon commodity industries, creating a significant risk of a sector mismatch for the university\'s many service-based suppliers. Pricing is also unclear.'
+                },
+                {
+                    id: 'axiom',
+                    name: 'Axiom',
+                    recommended: false,
+                    scores: { adoption: 2, cost: 3, features: 2, usability: 3 },
+                    focus: 'Generalist ESG, Social Value & Compliance Reporting',
+                    engagement: 'A centralized platform to "connect and communicate" with suppliers and gather essential data.',
+                    reductionFeatures: 'Calculates Scope 1, 2, and 3 emissions to "understand your carbon footprint." Less focus on proactive reduction tools.',
+                    pricing: 'Custom pricing. Supplier cost is unclear.',
+                    ux: 'Described as "easy to use" but its broad ESG scope risks being "clunky" for suppliers focused only on carbon.',
+                    methodology: 'UK-centric compliance platform. Calculates GHG emissions and tracks a wide range of Social and Governance metrics.',
+                    summary: 'A broad, UK-focused ESG platform that is a poor fit for the university\'s specific objective. Its strength in holistic ESG tracking is a weakness here, as it lacks specialized carbon reduction features and risks being perceived as "clunky" by suppliers, echoing the negative experience with EcoVadis.'
+                },
+                {
+                    id: 'pledge',
+                    name: 'Pledge',
+                    recommended: false,
+                    scores: { adoption: 1, cost: 2, features: 2, usability: 2 },
+                    focus: 'Specialist Carbon Platform for Logistics & Freight',
+                    engagement: 'Automates data collection from logistics suppliers. Provides a "Pledge Network" to stay up-to-date with supplier data.',
+                    reductionFeatures: 'Provides granular, accredited emissions data to allow for optimization of transport modes and trade lanes.',
+                    pricing: 'Subscription-based model, potentially with per-shipment fees. Not applicable to non-logistics suppliers.',
+                    ux: 'Highly intuitive for its target audience (logistics managers). Unsuitable and confusing for non-logistics suppliers.',
+                    methodology: 'GLEC Framework and ISO 14083 accredited methodology, the gold standard for all modes of transport.',
+                    summary: 'A best-in-class specialist platform for a single purpose: calculating emissions from logistics and freight. It is fundamentally unsuitable for the university\'s needs as its methodology is unusable for the vast majority of non-logistics suppliers, guaranteeing extremely low adoption.'
+                }
+            ];
+
+            const toolList = document.getElementById('tool-list');
+            const toolProfile = document.getElementById('tool-profile');
+            const ctx = document.getElementById('toolRadarChart').getContext('2d');
+            let radarChart;
+
+            const chartLabels = ['Supplier Adoption', 'Cost-Effectiveness', 'Reduction Features', 'Ease of Use'];
+            const chartColors = {
+                gpt: 'rgba(245, 158, 11, 0.7)', // amber-500
+                sweep: 'rgba(59, 130, 246, 0.7)', // blue-500
+                greenly: 'rgba(34, 197, 94, 0.7)', // green-500
+                scss: 'rgba(107, 114, 128, 0.7)', // gray-500
+                normative: 'rgba(139, 92, 246, 0.7)', // violet-500
+                carbonchain: 'rgba(239, 68, 68, 0.7)', // red-500
+                axiom: 'rgba(236, 72, 153, 0.7)', // pink-500
+                pledge: 'rgba(20, 184, 166, 0.7)' // teal-500
+            };
+             const chartBorderColors = {
+                gpt: 'rgb(245, 158, 11)',
+                sweep: 'rgb(59, 130, 246)',
+                greenly: 'rgb(34, 197, 94)',
+                scss: 'rgb(107, 114, 128)',
+                normative: 'rgb(139, 92, 246)',
+                carbonchain: 'rgb(239, 68, 68)',
+                axiom: 'rgb(236, 72, 153)',
+                pledge: 'rgb(20, 184, 166)'
+            };
+
+            function createRadarChart(initialToolId) {
+                const datasets = toolData.map(tool => ({
+                    label: tool.name,
+                    data: [tool.scores.adoption, tool.scores.cost, tool.scores.features, tool.scores.usability],
+                    backgroundColor: chartColors[tool.id],
+                    borderColor: chartBorderColors[tool.id],
+                    borderWidth: 2,
+                    pointBackgroundColor: chartBorderColors[tool.id],
+                    pointRadius: 4,
+                    hidden: tool.id !== initialToolId
+                }));
+
+                radarChart = new Chart(ctx, {
+                    type: 'radar',
+                    data: {
+                        labels: chartLabels,
+                        datasets: datasets
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        scales: {
+                            r: {
+                                angleLines: { color: 'rgba(0, 0, 0, 0.1)' },
+                                grid: { color: 'rgba(0, 0, 0, 0.1)' },
+                                pointLabels: { 
+                                    font: { size: 12, weight: '500' },
+                                    color: '#475569' // slate-600
+                                },
+                                ticks: {
+                                    beginAtZero: true,
+                                    min: 0,
+                                    max: 5,
+                                    stepSize: 1,
+                                    backdropColor: 'rgba(255, 255, 255, 0.75)',
+                                    color: '#64748b' // slate-500
+                                }
+                            }
+                        },
+                        plugins: {
+                            legend: {
+                                display: false
+                            },
+                            tooltip: {
+                                callbacks: {
+                                    label: function(context) {
+                                        let label = context.dataset.label || '';
+                                        if (label) {
+                                            label += ': ';
+                                        }
+                                        if (context.parsed.r !== null) {
+                                            label += context.parsed.r.toFixed(1);
+                                        }
+                                        return label;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+
+            function displayToolProfile(toolId) {
+                const tool = toolData.find(t => t.id === toolId);
+                if (!tool) return;
+
+                toolProfile.innerHTML = `
+                    <h3 class="text-2xl font-bold text-slate-900 mb-4">${tool.name}</h3>
+                    <div class="space-y-5">
+                        <div>
+                            <h4 class="font-semibold text-slate-800">Key Summary</h4>
+                            <p class="text-slate-600">${tool.summary}</p>
+                        </div>
+                        <div>
+                            <h4 class="font-semibold text-slate-800">Primary Focus</h4>
+                            <p class="text-slate-600">${tool.focus}</p>
+                        </div>
+                        <div>
+                            <h4 class="font-semibold text-slate-800">Supplier Engagement Mechanism</h4>
+                            <p class="text-slate-600">${tool.engagement}</p>
+                        </div>
+                         <div>
+                            <h4 class="font-semibold text-slate-800">Features for Supplier Reduction</h4>
+                            <p class="text-slate-600">${tool.reductionFeatures}</p>
+                        </div>
+                        <div>
+                            <h4 class="font-semibold text-slate-800">Known Pricing Model</h4>
+                            <p class="text-slate-600">${tool.pricing}</p>
+                        </div>
+                        <div>
+                            <h4 class="font-semibold text-slate-800">UI/UX Assessment</h4>
+                            <p class="text-slate-600">${tool.ux}</p>
+                        </div>
+                        <div>
+                            <h4 class="font-semibold text-slate-800">Core Methodology</h4>
+                            <p class="text-slate-600">${tool.methodology}</p>
+                        </div>
+                    </div>
+                `;
+                
+                // Scroll to profile on smaller screens
+                if (window.innerWidth < 1024) {
+                    document.getElementById('tool-profile').scrollIntoView({ behavior: 'smooth' });
+                }
+            }
+
+            function updateActiveCard(toolId) {
+                document.querySelectorAll('.tool-card').forEach(card => {
+                    card.classList.remove('active', 'bg-amber-50', 'border-amber-500');
+                    if (card.dataset.toolId === toolId) {
+                        card.classList.add('active', 'bg-amber-50', 'border-amber-500');
+                    }
+                });
+            }
+            
+            function updateChartVisibility(toolId) {
+                radarChart.data.datasets.forEach(dataset => {
+                    const currentTool = toolData.find(t => t.name === dataset.label);
+                    dataset.hidden = currentTool.id !== toolId;
+                });
+                radarChart.update();
+            }
+
+            // Populate tool list and set up event listeners
+            toolData.forEach(tool => {
+                const card = document.createElement('div');
+                card.className = 'tool-card p-4 border rounded-lg cursor-pointer transition-all duration-200 ease-in-out hover:shadow-md hover:border-amber-400';
+                card.dataset.toolId = tool.id;
+                card.innerHTML = `
+                    <div class="flex justify-between items-center">
+                        <span class="font-bold text-slate-800">${tool.name}</span>
+                        ${tool.recommended ? '<span class="text-xs font-semibold bg-amber-100 text-amber-800 px-2 py-1 rounded-full">Recommended</span>' : ''}
+                    </div>
+                `;
+                card.addEventListener('click', () => {
+                    displayToolProfile(tool.id);
+                    updateActiveCard(tool.id);
+                    updateChartVisibility(tool.id);
+                });
+                toolList.appendChild(card);
+            });
+
+            // Initial state
+            const initialToolId = 'gpt';
+            createRadarChart(initialToolId);
+            displayToolProfile(initialToolId);
+            updateActiveCard(initialToolId);
+        });
+    </script>
+</body>
+</html>
