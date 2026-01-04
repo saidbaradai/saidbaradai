@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>موقع عائشة لتبديل العملات</title>
+    <style>
+        :root {
+            --primary-pink: #ff758f;
+            --soft-bg: #fff0f3;
+            --card-bg: #ffffff;
+            --accent-color: #c9184a;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--soft-bg);
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            color: #444;
+        }
+
+        .app-container {
+            width: 100%;
+            max-width: 480px;
+            background: var(--card-bg);
+            border-radius: 30px;
+            box-shadow: 0 15px 35px rgba(255, 117, 143, 0.2);
+            padding: 25px;
+            border: 2px solid #ffb3c1;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        h1 {
+            color: var(--accent-color);
+            font-size: 1.6rem;
+            margin: 5px 0;
+        }
+
+        .subtitle {
+            font-size: 0.85rem;
+            color: #888;
+        }
+
+        /* قسم الإدخال */
+        .input-section {
+            background: #fff8fa;
+            padding: 20px;
+            border-radius: 20px;
+            margin-bottom: 20px;
+            border: 1px solid #ffe5ec;
+        }
+
+        label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: var(--accent-color);
+        }
+
+        input, select {
+            width: 100%;
+            padding: 14px;
+            border-radius: 12px;
+            border: 2px solid #ffccd5;
+            font-size: 1.1rem;
+            box-sizing: border-box;
+            text-align: center;
+            outline: none;
+            transition: 0.3s;
+        }
+
+        input:focus {
+            border-color: var(--primary-pink);
+        }
+
+        /* نتائج التحويل */
+        .results-grid {
+            display: grid;
+            gap: 12px;
+        }
+
+        .result-card {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px;
+            background: #fff;
+            border-radius: 15px;
+            border: 1px solid #ffccd5;
+            transition: transform 0.2s;
+        }
+
+        .result-card:hover {
+            transform: scale(1.02);
+            background: #fff0f3;
+        }
+
+        .currency-name {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 600;
+        }
+
+        .currency-val {
+            font-weight: bold;
+            color: var(--accent-color);
+            font-size: 1.1rem;
+        }
+
+        .main-converter {
+            border: 2px solid var(--primary-pink);
+            background-color: #fff0f3;
+        }
+
+        .footer-note {
+            text-align: center;
+            font-size: 0.75rem;
+            margin-top: 25px;
+            color: #b5838d;
+        }
+
+        /* لمسة جمالية للهواتف */
+        @media (max-width: 400px) {
+            .app-container { padding: 15px; }
+            h1 { font-size: 1.4rem; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="app-container">
+    <header>
+        <span>🌸</span>
+        <h1>موقع عائشة لتبديل العملات</h1>
+        <p class="subtitle">تحويل الليرة السورية (قديم/جديد) والعملات الأجنبية</p>
+    </header>
+
+    <div class="input-section">
+        <label>أدخلي المبلغ المراد تحويله:</label>
+        <input type="number" id="mainInput" placeholder="0.00" oninput="calculate()">
+        
+        <label style="margin-top: 15px;">من عملة:</label>
+        <select id="sourceCurrency" onchange="calculate()">
+            <option value="SYP_OLD">🇸🇾 ليرة سورية قديمة</option>
+            <option value="SYP_NEW">🇸🇾 ليرة سورية جديدة</option>
+            <option value="USD">🇺🇸 دولار أمريكي</option>
+            <option value="TRY">🇹🇷 ليرة تركية</option>
+        </select>
+    </div>
+
+    <div class="results-grid">
+        <div class="result-card main-converter" id="box_syp_new">
+            <div class="currency-name">🇸🇾 سورية (جديدة)</div>
+            <div class="currency-val" id="res_syp_new">0</div>
+        </div>
+
+        <div class="result-card main-converter" id="box_syp_old">
+            <div class="currency-name">🇸🇾 سورية (قديمة)</div>
+            <div class="currency-val" id="res_syp_old">0</div>
+        </div>
+
+        <div class="result-card">
+            <div class="currency-name">🇺🇸 دولار أمريكي</div>
+            <div class="currency-val" id="res_usd">0</div>
+        </div>
+
+        <div class="result-card">
+            <div class="currency-name">🇹🇷 ليرة تركية</div>
+            <div class="currency-val" id="res_try">0</div>
+        </div>
+    </div>
+
+    <div class="footer-note">
+        الأسعار المعتمدة: 1 جديد = 100 قديم <br>
+        الدولار: 11900 ق | التركي: 275 ق <br>
+        بكل حب لموقع عائشة &copy; 2026
+    </div>
+</div>
+
+<script>
+    // القيم الثابتة حسب طلبك
+    const RATE_USD_OLD = 11900;
+    const RATE_TRY_OLD = 275;
+    const RATIO_NEW_OLD = 100;
+
+    function calculate() {
+        let amount = parseFloat(document.getElementById('mainInput').value);
+        let from = document.getElementById('sourceCurrency').value;
+
+        if (isNaN(amount) || amount <= 0) {
+            updateUI(0, 0, 0, 0);
+            return;
+        }
+
+        let totalInOldSYP;
+
+        // المرحلة 1: تحويل أي مدخل إلى "ليرة سورية قديمة" كمرجع
+        switch(from) {
+            case 'SYP_OLD': totalInOldSYP = amount; break;
+            case 'SYP_NEW': totalInOldSYP = amount * RATIO_NEW_OLD; break;
+            case 'USD': totalInOldSYP = amount * RATE_USD_OLD; break;
+            case 'TRY': totalInOldSYP = amount * RATE_TRY_OLD; break;
+        }
+
+        // المرحلة 2: التحويل من الليرة القديمة إلى باقي القيم
+        let sypNew = totalInOldSYP / RATIO_NEW_OLD;
+        let sypOld = totalInOldSYP;
+        let usd = totalInOldSYP / RATE_USD_OLD;
+        let tryLira = totalInOldSYP / RATE_TRY_OLD;
+
+        updateUI(sypNew, sypOld, usd, tryLira);
+    }
+
+    function updateUI(sypNew, sypOld, usd, tryLira) {
+        document.getElementById('res_syp_new').innerText = sypNew.toLocaleString();
+        document.getElementById('res_syp_old').innerText = sypOld.toLocaleString();
+        document.getElementById('res_usd').innerText = usd.toLocaleString(undefined, {maximumFractionDigits: 2}) + " $";
+        document.getElementById('res_try').innerText = tryLira.toLocaleString(undefined, {maximumFractionDigits: 2}) + " TL";
+    }
+</script>
+
+</body>
+</html>
